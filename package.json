@@ -16,6 +16,7 @@
     "test": "ember test"
   },
   "devDependencies": {
+    "aframe": "^0.7.0",
     "broccoli-asset-rev": "^2.4.5",
     "ember-aframe": "0.0.12",
     "ember-ajax": "^3.0.0",
@@ -43,6 +44,8 @@
     "node": "^4.5 || 6.* || >= 7.*"
   },
   "dependencies": {
-    "ember-aframe": "0.0.12"
+    "ember-aframe": "0.0.12",
+    "ember-aframe-camera-extras": "^0.1.0",
+    "ember-aframe-shim": "^1.2.0"
   }
 }
