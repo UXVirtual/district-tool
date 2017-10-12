@@ -16,9 +16,10 @@
     "test": "ember test"
   },
   "devDependencies": {
-    "aframe": "^0.7.0",
     "broccoli-asset-rev": "^2.4.5",
-    "ember-aframe": "0.0.12",
+    "aframe-environment-component": "^1.0.0",
+    "aframe": "^0.7.0",
+    "ember-aframe": "git@github.com:HAZARDU5/ember-aframe.git#36a97b355687686981a6b61dcca2f0f4b28f877e",
     "ember-ajax": "^3.0.0",
     "ember-cli": "~2.15.1",
     "ember-cli-app-version": "^3.0.0",
@@ -42,10 +43,5 @@
   },
   "engines": {
     "node": "^4.5 || 6.* || >= 7.*"
-  },
-  "dependencies": {
-    "ember-aframe": "0.0.12",
-    "ember-aframe-camera-extras": "^0.1.0",
-    "ember-aframe-shim": "^1.2.0"
   }
 }
