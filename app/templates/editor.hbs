@@ -1,8 +1,11 @@
 <a-scene vr-mode-ui="enabled: true">
+    <a-assets>
+
+    </a-assets>
     <a-sphere color="#ffffff" position="0 0 -5" shadow></a-sphere>
     {{aframe/land-component
 
     }}
-    <a-entity environment="preset: tron; shadow: true; flatShading: false; ground: noise; grid: 1x1; seed: 76766959; gridColor: #e8c3ff; dressingColor: #00354b"></a-entity>
-    <a-entity position="0 0 0" star-system="radius: 100"></a-entity>
+    <a-entity environment="preset: tron; shadow: true; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb"></a-entity>
+    <a-entity position="0 0 0" star-system="radius: 100; color: #ee75eb; texture: assets/img/textures/star.svg"></a-entity>
 </a-scene>
