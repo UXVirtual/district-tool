@@ -18,6 +18,7 @@
   "devDependencies": {
     "aframe": "^0.7.0",
     "aframe-environment-component": "^1.0.0",
+    "aframe-star-system-component": "^1.0.0",
     "broccoli-asset-rev": "^2.4.5",
     "ember-aframe": "git@github.com:HAZARDU5/ember-aframe.git#36a97b355687686981a6b61dcca2f0f4b28f877e",
     "ember-ajax": "^3.0.0",
@@ -41,6 +42,7 @@
     "ember-source": "~2.15.0",
     "ember-welcome-page": "^3.0.0",
     "loader.js": "^4.2.3",
+    "semantic-ui-ember": "^2.0.1",
     "super-hands": "^2.0.1"
   },
   "engines": {

@@ -5,6 +5,7 @@ import config from './config/environment';
 import 'aframe';
 import 'npm:super-hands';
 import 'npm:aframe-environment-component';
+import 'npm:aframe-star-system-component';
 
 const App = Ember.Application.extend({
   modulePrefix: config.modulePrefix,
