@@ -1,8 +1,8 @@
 <a-scene vr-mode-ui="enabled: true">
-    <a-sphere color="#ff0000" position="0 0 -5"></a-sphere>
+    <a-sphere color="#ffffff" position="0 0 -5" shadow></a-sphere>
     {{aframe/land-component
 
     }}
 
-    <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>
+    <a-entity environment="preset: tron; shadow: true; flatShading: false; ground: noise; grid: 2x2"></a-entity>
 </a-scene>
