@@ -1,11 +1,123 @@
-<a-scene vr-mode-ui="enabled: true">
+<a-scene physics vr-mode-ui="enabled: true" networked-scene="
+  serverURL: https://haydenlee.io;
+  app: district-tool;
+  room: Aetheria;
+  connectOnLoad: true;
+  adapter: easyrtc;
+  audio: false;
+  debug: false;
+">
     <a-assets>
 
+        <!-- Mixins -->
+
+        <a-mixin id="cube" color="red" geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5" shadow hoverable grabbable drag-droppable
+                 dynamic-body></a-mixin>
+        <a-mixin id="cube-hovered" material="opacity: 0.7; transparent: true">
+        </a-mixin>
+        <a-mixin id="cube-dragover" material="wireframe: true; color: #00ff00"></a-mixin>
+
+        <a-mixin id="transformer" color="#000000" shadow drag-droppable
+                 fillable
+                  material="shader:standard; wireframe: true"
+                  geometry="primitive: box; width: 1; height: 1; depth: 1"></a-mixin>
+
+        <a-mixin id="transformer-dragover" material="shader:standard; wireframe: false; transparent: true; opacity: 0.1" material="color: #00ff00"></a-mixin>
+
+        <!-- Templates -->
+
+        <!-- Player -->
+        <script id="player-template" type="text/html">
+            <a-entity></a-entity>
+        </script>
+
+        <!-- Head -->
+        <script id="head-template" type="text/html">
+            <a-entity class="avatar">
+                <a-sphere class="head"
+                          color="#5985ff"
+                          scale="0.3 0.35 0.25"
+                          random-color
+                        ></a-sphere>
+                <a-entity class="face"
+                          position="0 0.05 0"
+                        >
+                    <a-sphere class="eye"
+                              color="#efefef"
+                              position="0.1 0.1 -0.2"
+                              scale="0.12 0.12 0.12"
+                            >
+                        <a-sphere class="pupil"
+                                  color="#000"
+                                  position="0 0 -1"
+                                  scale="0.2 0.2 0.2"
+                                ></a-sphere>
+                    </a-sphere>
+                    <a-sphere class="eye"
+                              color="#efefef"
+                              position="-0.1 0.1 -0.2"
+                              scale="0.12 0.12 0.12"
+                            >
+                        <a-sphere class="pupil"
+                                  color="#000"
+                                  position="0 0 -1"
+                                  scale="0.2 0.2 0.2"
+                                ></a-sphere>
+                    </a-sphere>
+                </a-entity>
+            </a-entity>
+        </script>
+
+        <!-- Hand -->
+        <script id="hand-template" type="text/html">
+            <a-box scale="0.1 0.1 0.1"></a-box>
+        </script>
+
+        <!-- Box -->
+        <script id="box-template" type="text/html">
+            <a-box mixin="cube" class="cube"></a-box>
+        </script>
+
+        <!-- /Templates -->
+
     </a-assets>
-    <a-sphere color="#ffffff" position="0 0 -5" shadow></a-sphere>
     {{aframe/land-component
-        position="0.5 0.5 0.5"
+        position="5 2.5 5"
     }}
-    <a-entity environment="preset: tron; shadow: true; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb"></a-entity>
+
+    <a-entity position="0 2 0" id="player" networked="template:#player-template;showLocalTemplate:false;" universal-controls>
+
+        <!-- progressive controls must have all objects the raycaster can interact with set or they will not fire events -->
+        <a-entity progressive-controls="objects: .cube, .collidable, .transformer; physicsBody: 'shape: sphere; sphereRadius: 0.02'">
+            <a-locomotor>
+                <a-entity id="lhand" class="left-controller" hand-controls="left" networked="template:#hand-template;showLocalTemplate:false;"></a-entity>
+                <a-entity id="rhand" class="right-controller" hand-controls="right" networked="template:#hand-template;showLocalTemplate:false;"></a-entity>
+                <a-entity camera="userHeight: 1.6" networked="template:#head-template;showLocalTemplate:false;" kinematic-body>
+                    <a-entity raycaster position="0 0 -0.5"
+                              geometry="primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32"
+                              material="color: white; shader: flat"
+                            >
+                    </a-entity>
+                </a-entity>
+            </a-locomotor>
+        </a-entity>
+    </a-entity>
+
+    <a-entity class="cube" mixin="cube" position="0 3 -1" material="color: red"></a-entity>
+    <a-entity class="cube" mixin="cube" position="0 3 -0.5" material="color: red"></a-entity>
+    <a-entity class="cube" mixin="cube" position="-1 3 -1" material="color: blue"></a-entity>
+    <a-entity class="cube" mixin="cube" position="-1 3 -0.5" material="color: blue"></a-entity>
+    <a-entity class="cube" mixin="cube" position="1 3 -1" material="color: green"></a-entity>
+    <a-entity class="cube" mixin="cube" position="1 3 -0.5" material="color: green"></a-entity>
+
+    <a-entity class="transformer" mixin="transformer" position="0.5 2.5 0.5"></a-entity>
+    <a-entity class="transformer" mixin="transformer" position="0.5 2.5 -0.5"></a-entity>
+    <a-entity class="transformer" mixin="transformer" position="-0.5 2.5 -0.5"></a-entity>
+    <a-entity class="transformer" mixin="transformer" position="-0.5 2.5 0.5"></a-entity>
+
+    <!-- ground collider keeps objets from falling -->
+    <a-box position="0 -3 0" static-body class="collidable" color="#000000" width=100 height=10 depth=100 visible="false"></a-box>
+
+    <a-entity position="0 2 0" environment="preset: tron; shadow: true; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb"></a-entity>
     <a-entity position="0 0 0" star-system="radius: 100; color: #ee75eb; texture: assets/img/textures/star.svg"></a-entity>
 </a-scene>

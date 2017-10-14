@@ -21,5 +21,17 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
+  app.import('vendor/socket.io/socket.io.slim.js',{
+    exports: {
+      io: ['default']
+    }
+  });
+
+  app.import('vendor/easyrtc/easyrtc.js',{
+    exports: {
+      easyrtc: ['default']
+    }
+  });
+
   return app.toTree();
 };

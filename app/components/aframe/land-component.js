@@ -7,8 +7,9 @@ const LANDComponent = AEntity.extend({
     ],
 
     geometry:"primitive: box;",
-    material:"color: #ffffff; wireframe: true; wireframeLinewidth: 4;",
-    shadow:""
+    material:"color: #ffffff; wireframe: false; wireframeLinewidth: 4;",
+    shadow:"",
+    'static-body': ''
 });
 
 LANDComponent.reopenClass({
