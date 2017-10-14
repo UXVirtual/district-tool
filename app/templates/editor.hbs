@@ -94,12 +94,14 @@
     }}
         <!-- progressive controls must have all objects the raycaster can interact with set or they will not fire events -->
 
-        <a-locomotor>
+
             <a-entity position="0 2 0" progressive-controls="objects: .cube, .collidable, .transformer; maxLevel: point">
+                <a-camera super-hands>
+                </a-camera>
                 <a-entity id="rhand" class="right-controller"></a-entity>
                 <a-entity id="lhand" class="left-controller"></a-entity>
             </a-entity>
-        </a-locomotor>
+
     <a-entity class="cube" mixin="cube" position="0 2 -1" material="color: red"></a-entity>
     <a-entity class="cube" mixin="cube" position="0 2 -0.5" material="color: red"></a-entity>
     <a-entity class="cube" mixin="cube" position="-1 2 -1" material="color: blue"></a-entity>
