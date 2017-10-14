@@ -3,6 +3,7 @@ import extras from 'npm:aframe-extras';
 //import Snap from '../components/aframe/raw/snap';
 //import IntersectionSpawn from '../components/aframe/raw/intersection-spawn';
 import Fillable from '../components/aframe/raw/fillable';
+import SnapSurface from '../components/aframe/raw/snap-surface';
 
 import AFRAME from 'aframe';
 
@@ -16,6 +17,10 @@ if (!AFRAME.components['intersection-spawn']) {
 
 if (!AFRAME.components['fillable']) {
     AFRAME.registerComponent('fillable', Fillable);
+}
+
+if (!AFRAME.components['snap-surface']) {
+    AFRAME.registerComponent('snap-surface', SnapSurface);
 }
 
 // Define custom schema for syncing avatar color, set by random-color

@@ -1,4 +1,4 @@
-<a-scene physics vr-mode-ui="enabled: true" networked-scene="
+<a-scene physics="driver: worker" vr-mode-ui="enabled: true" networked-scene="
   serverURL: https://haydenlee.io;
   app: district-tool;
   room: Aetheria;
@@ -11,19 +11,22 @@
 
         <!-- Mixins -->
 
-        <a-mixin id="cube" color="red" geometry="width: 0.5; height: 0.5; depth: 0.5" shadow hoverable grabbable drag-droppable
-                 template="src: #boxesTemplate"
-                 data-box1color="red" data-box2color="green" data-box3color="blue" dynamic-body></a-mixin>
-        <a-mixin id="cube-hovered" material="opacity: 0.7; transparent: true">
+        <a-mixin id="cube" shadow hoverable grabbable drag-droppable dynamic-body geometry="primitive: box; width: 1.1; height: 1.1; depth: 1.1" material="transparent: true; opacity: 0"></a-mixin>
+        <a-mixin id="cube-hovered" material="opacity: 0.7; color: purple">
         </a-mixin>
         <a-mixin id="cube-dragover" material="wireframe: true; color: #00ff00"></a-mixin>
 
-        <a-mixin id="transformer" color="#000000" shadow drag-droppable
+        <a-mixin id="transformer" shadow drag-droppable
                  fillable
-                  material="shader:standard; wireframe: true"
+                  material="shader:standard; wireframe: false; transparent: true; opacity: 0.2; color: pink"
                   geometry="primitive: box; width: 1; height: 1; depth: 1"></a-mixin>
 
-        <a-mixin id="transformer-dragover" material="shader:standard; wireframe: false; transparent: true; opacity: 0.1" material="color: #00ff00"></a-mixin>
+        <a-mixin id="transformer-inv" shadow drag-droppable
+                 fillable
+                 material="shader:standard; wireframe: false; transparent: true; opacity: 0.2; color: purple"
+                 geometry="primitive: box; width: 1; height: 1; depth: 1"></a-mixin>
+
+        <a-mixin id="transformer-dragover" material="opacity: 0.1" material="color: #00ff00"></a-mixin>
 
         <!-- Templates -->
 
@@ -95,26 +98,26 @@
         <!-- progressive controls must have all objects the raycaster can interact with set or they will not fire events -->
 
 
-            <a-entity position="0 2 0" progressive-controls="objects: .cube, .collidable, .transformer; maxLevel: point">
-                <a-camera super-hands>
+            <a-entity position="0 3 0" progressive-controls="objects: .cube, .collidable, .transformer; maxLevel: point">
+                <a-camera super-hands universal-controls>
                 </a-camera>
                 <a-entity id="rhand" class="right-controller"></a-entity>
                 <a-entity id="lhand" class="left-controller"></a-entity>
             </a-entity>
 
-    <a-entity class="cube" mixin="cube" position="0 2 -1" material="color: red"></a-entity>
-    <a-entity class="cube" mixin="cube" position="0 2 -0.5" material="color: red"></a-entity>
-    <a-entity class="cube" mixin="cube" position="-1 2 -1" material="color: blue"></a-entity>
-    <a-entity class="cube" mixin="cube" position="-1 2 -0.5" material="color: blue"></a-entity>
-    <a-entity class="cube" mixin="cube" position="1 2 -1" material="color: green"></a-entity>
-    <a-entity class="cube" mixin="cube" position="1 2 -0.5" material="color: green"></a-entity>
+    <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="0 2 -1"></a-entity>
+    <!--<a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="0 2 -0.5" material="color: red"></a-entity>
+    <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="-1 2 -1" material="color: blue"></a-entity>
+    <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="-1 2 -0.5" material="color: blue"></a-entity>
+    <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="1 2 -1" material="color: green"></a-entity>
+    <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="1 2 -0.5" material="color: green"></a-entity>-->
 
     <a-entity class="transformer" mixin="transformer" position="0.5 2.5 0.5"></a-entity>
-    <a-entity class="transformer" mixin="transformer" position="0.5 2.5 -0.5"></a-entity>
+    <a-entity class="transformer" mixin="transformer-inv" position="0.5 2.5 -0.5"></a-entity>
     <a-entity class="transformer" mixin="transformer" position="-0.5 2.5 -0.5"></a-entity>
-    <a-entity class="transformer" mixin="transformer" position="-0.5 2.5 0.5"></a-entity>
+    <a-entity class="transformer" mixin="transformer-inv" position="-0.5 2.5 0.5"></a-entity>
 
-    <a-entity id="tile-test" class="collidable" shadow hoverable grabbable drag-droppable position="0 2 -3">
+    <a-entity id="tile-test" class="collidable" dynamic-body shadow hoverable grabbable drag-droppable position="0 2 -3">
         <a-box width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
         <a-box width="0.2" height="1" depth="0.2" position="-0.2 0.5 0.2"></a-box>
         <a-box width="0.2" height="1" depth="0.2" position="0.2 0.5 0"></a-box>
@@ -123,7 +126,7 @@
 
 
     <!-- ground collider keeps objets from falling -->
-    <a-box position="0 -3 0" static-body class="collidable" color="#000000" width=100 height=10 depth=100 visible="false"></a-box>
+    <a-box position="0 -3 0" snap-surface static-body class="collidable" color="#000000" width=100 height=10 depth=100 visible="false"></a-box>
 
     <a-entity position="0 2 0" environment="preset: tron; shadow: true; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb"></a-entity>
     <a-entity position="0 0 0" star-system="radius: 100; color: #ee75eb; texture: assets/img/textures/star.svg"></a-entity>
