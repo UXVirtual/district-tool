@@ -14,7 +14,9 @@
         <a-mixin id="cube" shadow hoverable grabbable drag-droppable dynamic-body geometry="primitive: box; width: 1.1; height: 1.1; depth: 1.1" material="transparent: true; opacity: 0"></a-mixin>
         <a-mixin id="cube-hovered" material="opacity: 0.7; color: purple">
         </a-mixin>
-        <a-mixin id="cube-dragover" material="wireframe: true; color: #00ff00"></a-mixin>
+        <a-mixin id="cube-dragover" material="opacity: 0.7; color: green"></a-mixin>
+        <a-mixin id="cube-dragstart" material="opacity: 0.7; color: blue"></a-mixin>
+        <a-mixin id="cube-dragend" material="opacity: 0;"></a-mixin>
 
         <a-mixin id="transformer" shadow drag-droppable
                  fillable
