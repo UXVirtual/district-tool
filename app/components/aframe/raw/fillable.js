@@ -16,9 +16,9 @@ export default {
             evt.detail.dropped.setAttribute('static-body');
 
             //console.log('Parent',evt.detail.dropped.parentNode);
-            /*setTimeout(function(){
-                evt.detail.dropped.parentNode.removeChild(evt.detail.dropped);
-            },1000);*/
+            setTimeout(function(){
+                evt.detail.dropped.el.parentNode.removeChild(evt.detail.dropped.el);
+            },1000);
 
         }.bind(this));
     }

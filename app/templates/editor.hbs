@@ -11,8 +11,9 @@
 
         <!-- Mixins -->
 
-        <a-mixin id="cube" color="red" geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5" shadow hoverable grabbable drag-droppable
-                 dynamic-body></a-mixin>
+        <a-mixin id="cube" color="red" geometry="width: 0.5; height: 0.5; depth: 0.5" shadow hoverable grabbable drag-droppable
+                 template="src: #boxesTemplate"
+                 data-box1color="red" data-box2color="green" data-box3color="blue" dynamic-body></a-mixin>
         <a-mixin id="cube-hovered" material="opacity: 0.7; transparent: true">
         </a-mixin>
         <a-mixin id="cube-dragover" material="wireframe: true; color: #00ff00"></a-mixin>
@@ -25,6 +26,13 @@
         <a-mixin id="transformer-dragover" material="shader:standard; wireframe: false; transparent: true; opacity: 0.1" material="color: #00ff00"></a-mixin>
 
         <!-- Templates -->
+
+        <script id="boxesTemplate" type="text/x-handlebars-template">
+            <a-box width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
+            <a-box width="0.2" height="1" depth="0.2" position="-0.2 0.5 0.2"></a-box>
+            <a-box width="0.2" height="1" depth="0.2" position="0.2 0.5 0"></a-box>
+            <a-box width="1" height="0.2" depth="1"></a-box>
+        </script>
 
         <!-- Player -->
         <script id="player-template" type="text/html">
@@ -84,36 +92,33 @@
     {{aframe/land-component
         position="5 2.5 5"
     }}
-
-    <a-entity position="0 2 0" id="player" networked="template:#player-template;showLocalTemplate:false;" universal-controls>
-
         <!-- progressive controls must have all objects the raycaster can interact with set or they will not fire events -->
-        <a-entity progressive-controls="objects: .cube, .collidable, .transformer; physicsBody: 'shape: sphere; sphereRadius: 0.02'">
-            <a-locomotor>
-                <a-entity id="lhand" class="left-controller" hand-controls="left" networked="template:#hand-template;showLocalTemplate:false;"></a-entity>
-                <a-entity id="rhand" class="right-controller" hand-controls="right" networked="template:#hand-template;showLocalTemplate:false;"></a-entity>
-                <a-entity camera="userHeight: 1.6" networked="template:#head-template;showLocalTemplate:false;" kinematic-body>
-                    <a-entity raycaster position="0 0 -0.5"
-                              geometry="primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32"
-                              material="color: white; shader: flat"
-                            >
-                    </a-entity>
-                </a-entity>
-            </a-locomotor>
-        </a-entity>
-    </a-entity>
 
-    <a-entity class="cube" mixin="cube" position="0 3 -1" material="color: red"></a-entity>
-    <a-entity class="cube" mixin="cube" position="0 3 -0.5" material="color: red"></a-entity>
-    <a-entity class="cube" mixin="cube" position="-1 3 -1" material="color: blue"></a-entity>
-    <a-entity class="cube" mixin="cube" position="-1 3 -0.5" material="color: blue"></a-entity>
-    <a-entity class="cube" mixin="cube" position="1 3 -1" material="color: green"></a-entity>
-    <a-entity class="cube" mixin="cube" position="1 3 -0.5" material="color: green"></a-entity>
+        <a-locomotor>
+            <a-entity position="0 2 0" progressive-controls="objects: .cube, .collidable, .transformer; maxLevel: point">
+                <a-entity id="rhand" class="right-controller"></a-entity>
+                <a-entity id="lhand" class="left-controller"></a-entity>
+            </a-entity>
+        </a-locomotor>
+    <a-entity class="cube" mixin="cube" position="0 2 -1" material="color: red"></a-entity>
+    <a-entity class="cube" mixin="cube" position="0 2 -0.5" material="color: red"></a-entity>
+    <a-entity class="cube" mixin="cube" position="-1 2 -1" material="color: blue"></a-entity>
+    <a-entity class="cube" mixin="cube" position="-1 2 -0.5" material="color: blue"></a-entity>
+    <a-entity class="cube" mixin="cube" position="1 2 -1" material="color: green"></a-entity>
+    <a-entity class="cube" mixin="cube" position="1 2 -0.5" material="color: green"></a-entity>
 
     <a-entity class="transformer" mixin="transformer" position="0.5 2.5 0.5"></a-entity>
     <a-entity class="transformer" mixin="transformer" position="0.5 2.5 -0.5"></a-entity>
     <a-entity class="transformer" mixin="transformer" position="-0.5 2.5 -0.5"></a-entity>
     <a-entity class="transformer" mixin="transformer" position="-0.5 2.5 0.5"></a-entity>
+
+    <a-entity id="tile-test" class="collidable" shadow hoverable grabbable drag-droppable position="0 2 -3">
+        <a-box width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
+        <a-box width="0.2" height="1" depth="0.2" position="-0.2 0.5 0.2"></a-box>
+        <a-box width="0.2" height="1" depth="0.2" position="0.2 0.5 0"></a-box>
+        <a-box width="1" height="0.2" depth="1"></a-box>
+    </a-entity>
+
 
     <!-- ground collider keeps objets from falling -->
     <a-box position="0 -3 0" static-body class="collidable" color="#000000" width=100 height=10 depth=100 visible="false"></a-box>
