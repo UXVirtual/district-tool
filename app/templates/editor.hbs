@@ -115,6 +115,10 @@
 
             <a-entity position="0 3 0" progressive-controls="objects: .cube, .collidable, .transformer; maxLevel: point">
                 <a-camera super-hands universal-controls>
+                    <a-entity raycaster position="0 0 -0.5"
+                              geometry="primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32"
+                              material="color: white; shader: flat"
+                            ></a-entity>
                 </a-camera>
                 <a-entity id="rhand" class="right-controller"></a-entity>
                 <a-entity id="lhand" class="left-controller"></a-entity>
