@@ -1,3 +1,10 @@
+{{#ui-nag class="inline cookie"}}
+    <span class="title">
+    Use the WSAD keys to move and the mouse to look. Click and grab objects in the scene.
+  </span>
+    <i class="close icon"></i>
+{{/ui-nag}}
+
 <a-scene physics="driver: worker" vr-mode-ui="enabled: true" networked-scene="
   serverURL: https://haydenlee.io;
   app: district-tool;
@@ -16,7 +23,7 @@
         </a-mixin>
         <a-mixin id="cube-dragover" material="opacity: 0.7; color: green"></a-mixin>
         <a-mixin id="cube-dragstart" material="opacity: 0.7; color: blue"></a-mixin>
-        <a-mixin id="cube-dragend" material="opacity: 0;"></a-mixin>
+        <a-mixin id="cube-dragstop" material="opacity: 0.7; color: purple"></a-mixin>
 
         <a-mixin id="transformer" shadow drag-droppable
                  fillable
@@ -32,11 +39,17 @@
 
         <!-- Templates -->
 
-        <script id="boxesTemplate" type="text/x-handlebars-template">
+        <script id="boxesTemplate" type="text/html">
             <a-box width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
             <a-box width="0.2" height="1" depth="0.2" position="-0.2 0.5 0.2"></a-box>
             <a-box width="0.2" height="1" depth="0.2" position="0.2 0.5 0"></a-box>
             <a-box width="1" height="0.2" depth="1"></a-box>
+        </script>
+
+        <script id="boxes2Template" type="text/x-nunjucks-template">
+            <a-box color="${box1color}" position="-1 0 -5"></a-box>
+                    <a-box color="${box2color}" position="0 1 -5"></a-box>
+                    <a-box color="${box3color}" position="1 0 -5"></a-box>
         </script>
 
         <!-- Player -->
@@ -107,7 +120,12 @@
                 <a-entity id="lhand" class="left-controller"></a-entity>
             </a-entity>
 
-    <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="0 2 -1"></a-entity>
+    <a-entity template="src: #boxesTemplate; type: html" position="2 2.5 2"></a-entity>
+
+    <a-entity template="src: #boxes2Template" position="4 2.5 4"
+              data-box1color="red" data-box2color="green" data-box3color="blue"></a-entity>
+
+    <a-entity template="src: #boxesTemplate; type: html" class="cube" mixin="cube" position="0 2 -1" scale="0.5 0.5 0.5"></a-entity>
     <!--<a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="0 2 -0.5" material="color: red"></a-entity>
     <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="-1 2 -1" material="color: blue"></a-entity>
     <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="-1 2 -0.5" material="color: blue"></a-entity>
