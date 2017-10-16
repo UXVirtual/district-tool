@@ -3,7 +3,7 @@ import Resolver from './resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
 import AFRAME from 'aframe';
-import './components/aframe/raw/super-hands';
+import 'npm:super-hands';
 import 'npm:aframe-environment-component';
 import 'npm:aframe-star-system-component';
 import 'npm:networked-aframe';
