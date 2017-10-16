@@ -1,10 +1,56 @@
-<ul>
-    <li>
-        {{#link-to "editor"}}Open Editor{{/link-to}}
-    </li>
-    <li>
-        {{#link-to "preview"}}Preview Mode{{/link-to}}
-    </li>
-</ul>
+<!-- Page Contents -->
+<section id="home">
+    <div class="ui inverted vertical masthead center aligned segment">
+
+        <div class="ui container">
+            <div class="ui large secondary inverted pointing menu">
+                {{#link-to "index" class="item"}}Home{{/link-to}}
+                {{#link-to "editor" class="item"}}Editor{{/link-to}}
+                {{#link-to "preview" class="item"}}Preview{{/link-to}}
+                <!--<div class="right item">
+                    <a class="ui inverted button">Log in</a>
+                    <a class="ui inverted button">Sign Up</a>
+                </div>-->
+            </div>
+        </div>
+
+        <div class="ui text container">
+            <h1 class="ui inverted header">
+                District Tool
+            </h1>
+            <h2>Plan Decentraland districts with your team today</h2>
+            <div class="ui huge primary button">Get Started <i class="right arrow icon"></i></div>
+        </div>
+
+    </div>
+
+    <div class="ui vertical stripe segment">
+        <div class="ui middle aligned stackable grid container">
+            <div class="row">
+                <div class="eight wide column">
+                    <h3 class="ui header">Morbi vehicula hendrerit cursus</h3>
+                    <p>
+                        Duis rhoncus metus eget dolor consequat posuere. Sed volutpat urna sit amet consequat sodales.
+                        Aenean ornare magna metus, mattis mollis sapien ullamcorper ac.
+                    </p>
+                    <h3 class="ui header">Praesent neque tortor, sagittis sed</h3>
+                    <p>
+                        Praesent sagittis nibh fringilla nunc malesuada, ultrices blandit mi sollicitudin. Phasellus
+                        tempor ante quis tincidunt rutrum. Pellentesque aliquet sem eget lorem cursus, sit amet pharetra
+                        ipsum luctus. Suspendisse potenti.
+                    </p>
+                </div>
+                <div class="six wide right floated column">
+                    <img src="http://via.placeholder.com/254x254" class="ui large bordered rounded image">
+                </div>
+            </div>
+            <div class="row">
+                <div class="center aligned column">
+                    <a class="ui huge button">Read more</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 {{outlet}}

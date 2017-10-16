@@ -33,5 +33,7 @@ window.NAF.options.updateRate = 15;
 // Register a particular package, and its dependencies.
 extras.controls.registerAll();
 
+//TODO: remove aframe body/html markup when component unmounts
+
 export default Ember.Route.extend({
 });
