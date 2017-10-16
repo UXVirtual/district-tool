@@ -1,19 +1,11 @@
 import Ember from 'ember';
+import AFRAME from 'aframe';
 import extras from 'npm:aframe-extras';
-//import Snap from '../components/aframe/raw/snap';
-//import IntersectionSpawn from '../components/aframe/raw/intersection-spawn';
+
 import Fillable from '../components/aframe/raw/fillable';
 import SnapSurface from '../components/aframe/raw/snap-surface';
 
-import AFRAME from 'aframe';
-
-/*if (!AFRAME.components['snap']) {
-    AFRAME.registerComponent('snap', Snap);
-}
-
-if (!AFRAME.components['intersection-spawn']) {
-    AFRAME.registerComponent('intersection-spawn', IntersectionSpawn);
-}*/
+//import '../components/ui/instructions-modal'
 
 if (!AFRAME.components['fillable']) {
     AFRAME.registerComponent('fillable', Fillable);
