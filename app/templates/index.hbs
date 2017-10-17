@@ -3,30 +3,31 @@
     <div class="ui inverted vertical masthead center aligned segment">
 
         <div class="ui container">
-            <div class="ui large secondary inverted pointing menu">
-                <div class="left item">
-                    {{#link-to "index" class="item"}}Home{{/link-to}}
-                    {{#link-to "editor" class="item"}}Editor{{/link-to}}
-                    {{#link-to "preview" class="item"}}Preview{{/link-to}}
-                </div>
+            <nav class="ui large secondary inverted stackable pointing menu">
 
-                <!--<div class="right item">
-                    <a class="ui inverted button">Log in</a>
-                    <a class="ui inverted button">Sign Up</a>
-                </div>-->
-                <div class="right item">
-                    <a href="https://www.decentraland.org/" title="Decentraland"><img src="assets/img/decentraland-logo-bw.svg" width="32" height="32" /></a>
-                </div>
-            </div>
+                {{#link-to "index" class="item"}}Home{{/link-to}}
+                {{#link-to "editor" class="item"}}Editor{{/link-to}}
+                {{#link-to "preview" class="item"}}Preview{{/link-to}}
+
+                <a class="right item" href="https://www.decentraland.org/" title="Decentraland">
+                    <img src="assets/img/decentraland-logo-bw.svg" width="32" height="32" />
+                </a>
+            </nav>
         </div>
 
-        <div class="ui text container">
+        <header class="ui text container">
             <h1 class="ui inverted header">
                 District Tool
             </h1>
             <h2>Plan Decentraland districts with your team today</h2>
-            <div class="ui huge inverted blue button">Get Started <i class="right arrow icon"></i></div>
-        </div>
+
+            <button class="ui huge inverted animated blue button" tabindex="0">
+                <span class="visible content">Get Started</span>
+                <span class="hidden content">
+                    <i class="right arrow icon"></i>
+                </span>
+            </button>
+        </header>
 
     </div>
 
@@ -52,7 +53,13 @@
             </div>
             <div class="row">
                 <div class="center aligned column">
-                    <a class="ui huge primary button">Read more <i class="right arrow icon"></i></a>
+
+                    <button class="ui huge animated primary button" tabindex="0">
+                        <span class="visible content">Read more</span>
+                        <span class="hidden content">
+                            <i class="right arrow icon"></i>
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>

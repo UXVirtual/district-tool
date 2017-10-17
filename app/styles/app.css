@@ -78,7 +78,7 @@
     display: none;
 }
 
-@media only screen and (max-width: 700px) {
+/*@media only screen and (max-width: 700px) {
     .ui.fixed.menu {
         display: none !important;
     }
@@ -100,7 +100,7 @@
         margin-top: 0.5em;
         font-size: 1.5em;
     }
-}
+}*/
 
 body, .ui.header, h1, h2, h3, h4, h5{
     font-family: 'Roboto', sans-serif;
