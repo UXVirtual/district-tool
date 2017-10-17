@@ -1,9 +1,15 @@
 import Ember from 'ember';
 import AFRAME from 'aframe';
 import extras from 'npm:aframe-extras';
+import 'npm:super-hands';
+import 'npm:aframe-environment-component';
+import 'npm:aframe-star-system-component';
+import 'npm:networked-aframe';
+import 'npm:aframe-event-set-component';
 
 import Fillable from '../components/aframe/raw/fillable';
-import SnapSurface from '../components/aframe/raw/snap-surface';
+import Extrude from '../components/aframe/raw/extrude';
+//import SnapSurface from '../components/aframe/raw/snap-surface';
 
 //import '../components/ui/instructions-modal'
 
@@ -11,8 +17,12 @@ if (!AFRAME.components['fillable']) {
     AFRAME.registerComponent('fillable', Fillable);
 }
 
-if (!AFRAME.components['snap-surface']) {
+/*if (!AFRAME.components['snap-surface']) {
     AFRAME.registerComponent('snap-surface', SnapSurface);
+}*/
+
+if (!AFRAME.components['extrude']) {
+    AFRAME.registerComponent('extrude', Extrude);
 }
 
 // Define custom schema for syncing avatar color, set by random-color

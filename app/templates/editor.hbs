@@ -39,12 +39,6 @@
 
         <!-- Templates -->
 
-        <script id="boxes2Template" type="text/x-nunjucks-template">
-            <a-box color="${box1color}" position="-1 0 -5"></a-box>
-                    <a-box color="${box2color}" position="0 1 -5"></a-box>
-                    <a-box color="${box3color}" position="1 0 -5"></a-box>
-        </script>
-
         <!-- Player -->
         <script id="player-template" type="text/html">
             <a-entity></a-entity>
@@ -117,11 +111,6 @@
                 <a-entity id="lhand" class="left-controller"></a-entity>
             </a-entity>
 
-    <a-entity template="src: #boxesTemplate; type: html" position="2 2.5 2"></a-entity>
-
-    <a-entity template="src: #boxes2Template" position="4 2.5 4"
-              data-box1color="red" data-box2color="green" data-box3color="blue"></a-entity>
-
     <a-entity template="src: #boxesTemplate; type: html" class="cube" mixin="cube" position="0 2 -1" scale="0.5 0.5 0.5"></a-entity>
     <!--<a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="0 2 -0.5" material="color: red"></a-entity>
     <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="-1 2 -1" material="color: blue"></a-entity>
@@ -134,11 +123,21 @@
     <a-entity class="transformer" mixin="transformer" position="-0.5 2.5 -0.5"></a-entity>
     <a-entity class="transformer" mixin="transformer-inv" position="-0.5 2.5 0.5"></a-entity>
 
-    <a-entity id="tile-test" class="collidable" dynamic-body shadow hoverable grabbable drag-droppable position="0 2 -3">
+    <a-entity id="tile-test" class="collidable" dynamic-body shadow hoverable grabbable drag-droppable position="0 2.5 -3">
         <a-box width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
         <a-box width="0.2" height="1" depth="0.2" position="-0.2 0.5 0.2"></a-box>
         <a-box width="0.2" height="1" depth="0.2" position="0.2 0.5 0"></a-box>
         <a-box width="1" height="0.2" depth="1"></a-box>
+    </a-entity>
+
+    <a-entity id="tile-test2" class="collidable" dynamic-body="shape: box" shadow hoverable grabbable drag-droppable position="0 2.5 -4">
+        <a-box width="1" height="1" depth="1" material="transparent: true; opacity: 0.2">
+        </a-box>
+        <a-entity
+                extrude="path: m0.1,0.1 l-0.2,0 l0,-0.2 l0.2,0 l0,0.2 z; amount:1"
+                position="0 0 0"
+                rotation="-90 0 0"
+                material="color:blue"></a-entity>
     </a-entity>
 
 

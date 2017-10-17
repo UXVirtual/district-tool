@@ -51,7 +51,8 @@
     "networked-aframe": "^0.3.1",
     "semantic-ui-ember": "^2.0.1",
     "socket.io-client": "^2.0.3",
-    "super-hands": "^2.0.2"
+    "super-hands": "^2.0.2",
+    "three": "^0.87.1"
   },
   "engines": {
     "node": "^4.5 || 6.* || >= 7.*"
