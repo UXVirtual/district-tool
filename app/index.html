@@ -13,9 +13,18 @@
     <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css">
     <link integrity="" rel="stylesheet" href="{{rootURL}}assets/district-tool.css">
 
+    <!-- TODO: find a workaround for this. A-Frame templates must go outside compiled code, otherwise position is not honored -->
+    <script id="boxesTemplate" type="text/html">
+      <a-box width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
+      <a-box width="0.2" height="1" depth="0.2" position="-0.2 0.5 0.2"></a-box>
+      <a-box width="0.2" height="1" depth="0.2" position="0.2 0.5 0"></a-box>
+      <a-box width="1" height="0.2" depth="1"></a-box>
+    </script>
+
     {{content-for "head-footer"}}
   </head>
   <body>
+
     {{content-for "body"}}
 
     <script src="{{rootURL}}assets/vendor.js"></script>
