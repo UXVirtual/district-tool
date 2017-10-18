@@ -21,6 +21,24 @@
       <a-box width="1" height="0.2" depth="1"></a-box>
     </script>
 
+    <a-entity id="layoutTemplate" type="text/html">
+      <a-entity layout="type: box; margin: 0.5; columns:2; plane: xz" position="-0.25 0 -0.25">
+        <a-entity>
+          <a-box width="0.2" height="4" depth="0.2" position="0 -2 0"></a-box>
+        </a-entity>
+        <a-entity>
+          <a-box width="0.2" height="3" depth="0.2" position="0 -1.5 0"></a-box>
+        </a-entity>
+        <a-entity>
+          <a-box width="0.2" height="2" depth="0.2" position="0 -1 0"></a-box>
+        </a-entity>
+        <a-entity>
+          <a-box width="0.2" height="1" depth="0.2" position="0 -0.5 0"></a-box>
+        </a-entity>
+      </a-entity>
+      <a-box width="1" height="0.2" depth="1"></a-box>
+    </a-entity>
+
     {{content-for "head-footer"}}
   </head>
   <body>
