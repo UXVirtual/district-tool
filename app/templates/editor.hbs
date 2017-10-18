@@ -22,8 +22,7 @@
         <a-mixin id="cube-hovered" material="opacity: 0.7; color: purple">
         </a-mixin>
         <a-mixin id="cube-dragover" material="opacity: 0.7; color: green"></a-mixin>
-        <a-mixin id="cube-dragstart" material="opacity: 0.7; color: blue"></a-mixin>
-        <a-mixin id="cube-dragstop" material="opacity: 0.7; color: purple"></a-mixin>
+        <a-mixin id="cube-dragover-stop" material="opacity: 0.7; color: purple"></a-mixin>
 
         <a-mixin id="transformer" shadow drag-droppable
                  fillable
@@ -35,7 +34,10 @@
                  material="shader:standard; wireframe: false; transparent: true; opacity: 0.2; color: purple"
                  geometry="primitive: box; width: 1; height: 1; depth: 1"></a-mixin>
 
+        <a-mixin id="transformer-inv-dragover" material="opacity: 0.1" material="color: #00ff00"></a-mixin>
+        <a-mixin id="transformer-inv-dragover-stop" material="opacity: 0.2" material="color: purple"></a-mixin>
         <a-mixin id="transformer-dragover" material="opacity: 0.1" material="color: #00ff00"></a-mixin>
+        <a-mixin id="transformer-dragover-stop" material="opacity: 0.2" material="color: pink"></a-mixin>
 
         <!-- Templates -->
 
@@ -94,9 +96,6 @@
         <!-- /Templates -->
 
     </a-assets>
-    {{aframe/land-component
-        position="5 2.5 5"
-    }}
         <!-- progressive controls must have all objects the raycaster can interact with set or they will not fire events -->
 
 
@@ -120,10 +119,7 @@
     <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="1 2 -1" material="color: green"></a-entity>
     <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="1 2 -0.5" material="color: green"></a-entity>-->
 
-    <a-entity class="transformer" mixin="transformer" position="0.5 2.5 0.5"></a-entity>
-    <a-entity class="transformer" mixin="transformer-inv" position="0.5 2.5 -0.5"></a-entity>
-    <a-entity class="transformer" mixin="transformer" position="-0.5 2.5 -0.5"></a-entity>
-    <a-entity class="transformer" mixin="transformer-inv" position="-0.5 2.5 0.5"></a-entity>
+    {{transformer-grid rows="10" cols="10" class="transformer-grid" position="0.5 2 0.5"}}
 
     <a-entity id="tile-test" class="collidable" dynamic-body shadow hoverable grabbable drag-droppable position="0 2.5 -3">
         <a-box width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>

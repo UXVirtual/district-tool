@@ -1,0 +1,5 @@
+{{#each tiles as |tile|}}
+    <a-entity class="{{tile.type}}" mixin="{{tile.type}}" template="src: #transformerTemplate" position="{{tile.position}}"></a-entity>
+{{/each}}
+
+{{yield}}
