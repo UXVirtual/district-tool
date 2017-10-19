@@ -77,7 +77,7 @@ export default {
                     this.el.children[0].setAttribute('template',evt.detail.dropped.parentNode.getAttribute('template'));
                     //this.el.removeAttribute('fillable');
                     //this.el.removeAttribute('drag-droppable');
-
+                    this.el.children[0].setAttribute('rotation','90 0 0');
                     //TODO move dropped back to pool
                 }else if(evt.detail.dropped.parentNode.parentNode.parentNode.classList.contains('cube') && evt.detail.dropped.parentNode.parentNode.parentNode.getAttribute('template')){
                     console.log('Setting new template');
@@ -89,6 +89,7 @@ export default {
                     //this.el.setAttribute('material',evt.detail.dropped.parentNode.getAttribute('material'));
                     //this.el.children[0].setAttribute('material','wireframe:false; transparent: true; opacity: 0');
                     this.el.children[0].setAttribute('template',evt.detail.dropped.parentNode.parentNode.parentNode.getAttribute('template'));
+                    this.el.children[0].setAttribute('rotation','90 0 0');
                     //this.el.children[0].removeAttribute('fillable');
                     //this.el.children[0].removeAttribute('drag-droppable');
                 }
