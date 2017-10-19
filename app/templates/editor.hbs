@@ -5,7 +5,7 @@
     <i class="close icon"></i>
 {{/ui-nag}}
 
-<a-scene physics="driver: worker" vr-mode-ui="enabled: true" networked-scene="
+<a-scene stats physics vr-mode-ui="enabled: true" networked-scene="
   serverURL: https://haydenlee.io;
   app: district-tool;
   room: Aetheria;
@@ -24,15 +24,25 @@
         <a-mixin id="cube-dragover" material="opacity: 0.7; color: green"></a-mixin>
         <a-mixin id="cube-dragover-stop" material="opacity: 0.7; color: purple"></a-mixin>
 
-        <a-mixin id="transformer" shadow drag-droppable
+        <a-mixin id="transformer" drag-droppable
                  fillable
-                  material="shader:standard; wireframe: false; transparent: true; opacity: 0.2; color: pink"
-                  geometry="primitive: box; width: 1; height: 1; depth: 1"></a-mixin>
+                  material="shader:flat; wireframe: false; transparent: true; opacity: 0.2; color: pink; side: double"
+                  geometry="primitive: plane; width: 1; height: 1; depth: 1" rotation="-90 0 0"></a-mixin>
 
-        <a-mixin id="transformer-inv" shadow drag-droppable
+        <a-mixin id="transformer-inv" drag-droppable
                  fillable
-                 material="shader:standard; wireframe: false; transparent: true; opacity: 0.2; color: purple"
-                 geometry="primitive: box; width: 1; height: 1; depth: 1"></a-mixin>
+                 material="shader:flat; wireframe: false; transparent: true; opacity: 0.2; color: purple; side: double"
+                 geometry="primitive: plane; width: 1; height: 1; depth: 1" rotation="-90 0 0"></a-mixin>
+
+        <a-mixin id="transformer-opaque" drag-droppable
+                 fillable
+                 material="shader:flat; wireframe: false; transparent: false; opacity: 1; color: pink; side: double"
+                 geometry="primitive: plane; width: 1; height: 1; depth: 1" rotation="-90 0 0"></a-mixin>
+
+        <a-mixin id="transformer-inv-opaque" drag-droppable
+                 fillable
+                 material="shader:flat; wireframe: false;  transparent: false; opacity: 1; color: purple; side: double"
+                 geometry="primitive: plane; width: 1; height: 1; depth: 1" rotation="-90 0 0"></a-mixin>
 
         <a-mixin id="transformer-inv-dragover" material="opacity: 0.1" material="color: #00ff00"></a-mixin>
         <a-mixin id="transformer-inv-dragover-stop" material="opacity: 0.2" material="color: purple"></a-mixin>
@@ -95,6 +105,8 @@
 
         <!-- /Templates -->
 
+        <img id="grid1x1-texture" src="assets/img/textures/grid.png" />
+
     </a-assets>
         <!-- progressive controls must have all objects the raycaster can interact with set or they will not fire events -->
 
@@ -119,7 +131,7 @@
     <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="1 2 -1" material="color: green"></a-entity>
     <a-entity template="src: #boxesTemplate" class="cube" mixin="cube" position="1 2 -0.5" material="color: green"></a-entity>-->
 
-    {{transformer-grid rows="10" cols="10" class="transformer-grid" position="0.5 2 0.5"}}
+    {{transformer-grid rows="10" cols="10" class="transformer-grid" position="-0.5 2.01 -0.5"}}
 
     <a-entity id="tile-test" class="collidable" dynamic-body shadow hoverable grabbable drag-droppable position="0 2.5 -3">
         <a-box width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
@@ -162,6 +174,6 @@
     <!-- ground collider keeps objets from falling -->
     <a-box position="0 -3 0" snap-surface static-body class="collidable" color="#000000" width=100 height=10 depth=100 visible="false"></a-box>
 
-    <a-entity position="0 2 0" environment="preset: tron; shadow: true; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb"></a-entity>
+    <a-entity position="0 2 0" environment="playArea: 1; preset: tron; shadow: true; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb" environment-ground-texture="src:#grid1x1-texture; repeat: 10.1 10.1"></a-entity>
     <a-entity position="0 0 0" star-system="radius: 100; color: #ee75eb; texture: assets/img/textures/star.svg"></a-entity>
 </a-scene>

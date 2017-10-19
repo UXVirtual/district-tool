@@ -9,10 +9,25 @@ import 'npm:aframe-event-set-component';
 import 'npm:aframe-layout-component';
 
 import Fillable from '../components/aframe/raw/fillable';
+import EnvironmentGroundTexture from '../components/aframe/raw/environment-ground-texture';
+//import LOD from '../components/aframe/raw/lod';
+//import LODLevel from '../components/aframe/raw/lod-level';
 
 if (!AFRAME.components['fillable']) {
     AFRAME.registerComponent('fillable', Fillable);
 }
+
+if (!AFRAME.components['environment-ground-texture']) {
+    AFRAME.registerComponent('environment-ground-texture', EnvironmentGroundTexture);
+}
+
+/*if (!AFRAME.components['lod']) {
+    AFRAME.registerComponent('lod', LOD);
+}
+
+if (!AFRAME.components['lod-level']) {
+    AFRAME.registerComponent('lod-level', LODLevel);
+}*/
 
 // Define custom schema for syncing avatar color, set by random-color
 window.NAF.schemas.add({

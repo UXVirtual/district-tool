@@ -20,7 +20,7 @@ export default AEntity.extend({
             });
 
             currentCol++;
-            if(currentCol > this.cols){
+            if(currentCol > this.cols-1){
                 currentCol = 0;
                 currentRow++;
                 if(currentRow > this.rows){
