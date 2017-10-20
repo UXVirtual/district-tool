@@ -8,17 +8,27 @@ import 'npm:networked-aframe';
 import 'npm:aframe-event-set-component';
 import 'npm:aframe-layout-component';
 
-import Fillable from '../components/aframe/raw/fillable';
+//import Fillable from '../components/aframe/raw/fillable';
 import EnvironmentGroundTexture from '../components/aframe/raw/environment-ground-texture';
+import IntersectionSpawn from '../components/aframe/raw/intersection-spawn';
+import Snap from '../components/aframe/raw/snap';
 //import LOD from '../components/aframe/raw/lod';
 //import LODLevel from '../components/aframe/raw/lod-level';
 
-if (!AFRAME.components['fillable']) {
+/*if (!AFRAME.components['fillable']) {
     AFRAME.registerComponent('fillable', Fillable);
-}
+}*/
 
 if (!AFRAME.components['environment-ground-texture']) {
     AFRAME.registerComponent('environment-ground-texture', EnvironmentGroundTexture);
+}
+
+if (!AFRAME.components['intersection-spawn']) {
+    AFRAME.registerComponent('intersection-spawn', IntersectionSpawn);
+}
+
+if (!AFRAME.components['snap']) {
+    AFRAME.registerComponent('snap', Snap);
 }
 
 /*if (!AFRAME.components['lod']) {
@@ -42,6 +52,7 @@ window.NAF.schemas.add({
     ]
 });
 
+window.NAF.options.compressSyncPackets = true;
 window.NAF.options.updateRate = 15;
 
 // Register a particular package, and its dependencies.
