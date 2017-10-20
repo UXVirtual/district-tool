@@ -37,8 +37,6 @@ export default {
             window.NAF.schemas.add(templateSchema);
         }
 
-        console.log('Initialized');
-
         setTimeout(function(){
             this.el.setAttribute('raycaster','showLine',true);
             this.el.setAttribute('raycaster','far', 100);
@@ -51,8 +49,6 @@ export default {
 
             var targetEl = evt.detail.intersectedEl;
             var targetElClass = targetEl.getAttribute('class');
-
-            console.log('Intersected: ',evt);
 
             if(!targetElClass || targetElClass !== 'checkpoint'){
                 var worldPos = evt.detail.intersection.point;
@@ -81,17 +77,19 @@ export default {
 
         var cursorMenu = document.querySelector('#cursor-menu');
 
-        document.addEventListener("mousewheel", function(e){
+        var selectBar = cursorMenu.components['select-bar'];
+
+        document.addEventListener("wheel", function(e){
             // cross-browser wheel delta
             var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
 
             if(delta > 0){
-                cursorMenu.components['select-bar'].onOptionPrevious();
+                selectBar.onOptionPrevious();
             }else{
-                cursorMenu.components['select-bar'].onOptionNext();
+                selectBar.onOptionNext();
             }
 
-            this.el.setAttribute('intersection-spawn-multi','currenttemplate',cursorMenu.components['select-bar'].selectedOptionValue);
+            this.el.setAttribute('intersection-spawn','currentTemplate',selectBar.selectedOptionValue);
 
         }.bind(this), false);
     }

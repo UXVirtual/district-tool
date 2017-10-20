@@ -14,18 +14,18 @@
     <link integrity="" rel="stylesheet" href="{{rootURL}}assets/district-tool.css">
 
     <!-- TODO: find a workaround for this. A-Frame templates must go outside compiled code, otherwise position is not honored -->
-    <script id="boxesTemplate" type="text/html">
+    <script id="box1Template" type="text/html">
       <a-box shadow width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
       <a-box shadow width="0.2" height="1" depth="0.2" position="-0.2 0.5 0.2"></a-box>
       <a-box shadow width="0.2" height="1" depth="0.2" position="0.2 0.5 0"></a-box>
       <a-box shadow width="1" height="0.2" depth="1"></a-box>
     </script>
 
-    <script id="basicBoxTemplate" type="text/html">
+    <script id="box2Template" type="text/html">
       <a-box shadow></a-box>
     </script>
 
-    <a-entity id="layoutTemplate" type="text/html">
+    <a-entity id="box3Template" type="text/html">
       <a-entity layout="type: box; margin: 0.5; columns:2; plane: xz" position="-0.25 0 -0.25">
         <a-entity>
           <a-box shadow width="0.2" height="4" depth="0.2" position="0 -2 0"></a-box>
@@ -43,9 +43,18 @@
       <a-box shadow width="1" height="0.2" depth="1"></a-box>
     </a-entity>
 
-    <a-entity id="transformerTemplate" type="text/html">
-      <a-entity class="transformer-container"></a-entity>
-    </a-entity>
+    <script id="box4Template" type="text/html">
+      <a-box shadow></a-box>
+    </script>
+
+    <script id="box5Template" type="text/html">
+      <a-box shadow></a-box>
+    </script>
+
+    <script id="box6Template" type="text/html">
+      <a-box shadow></a-box>
+    </script>
+
     {{content-for "head-footer"}}
   </head>
   <body>
