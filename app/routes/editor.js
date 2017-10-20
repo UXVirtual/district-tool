@@ -7,6 +7,7 @@ import 'npm:aframe-star-system-component';
 import 'npm:networked-aframe';
 import 'npm:aframe-event-set-component';
 import 'npm:aframe-layout-component';
+import 'npm:aframe-select-bar-component';
 
 //import Fillable from '../components/aframe/raw/fillable';
 import EnvironmentGroundTexture from '../components/aframe/raw/environment-ground-texture';

@@ -34,7 +34,7 @@ export default {
                     'position'
                 ]
             };
-            NAF.schemas.add(templateSchema);
+            window.NAF.schemas.add(templateSchema);
         }
 
         console.log('Initialized');
@@ -78,5 +78,21 @@ export default {
                 });*/
             }
         }.bind(this));
+
+        var cursorMenu = document.querySelector('#cursor-menu');
+
+        document.addEventListener("mousewheel", function(e){
+            // cross-browser wheel delta
+            var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+
+            if(delta > 0){
+                cursorMenu.components['select-bar'].onOptionPrevious();
+            }else{
+                cursorMenu.components['select-bar'].onOptionNext();
+            }
+
+            this.el.setAttribute('intersection-spawn-multi','currenttemplate',cursorMenu.components['select-bar'].selectedOptionValue);
+
+        }.bind(this), false);
     }
 };

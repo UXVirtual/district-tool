@@ -107,16 +107,27 @@
 
         <img id="grid1x1-texture" src="assets/img/textures/grid.png" />
 
+        <a-asset-item id="env_arrow" src="assets/obj/env_arrow.obj"></a-asset-item>
+
     </a-assets>
         <!-- progressive controls must have all objects the raycaster can interact with set or they will not fire events -->
 
 
             <a-entity position="0 3 0" progressive-controls="objects: .cube, .collidable, .transformer; maxLevel: point">
                 <a-camera super-hands universal-controls>
-                        <a-cursor raycaster="showLine: true; far: 100" line="color: orange; opacity: 0.5" intersection-spawn="event: click; currentTemplate: #basicBoxTemplate; templates: #boxesTemplate, #layoutTemplate, #basicBoxTemplate" position="0 0 -0.5"
+                        <a-cursor id="cursor" raycaster="showLine: true; far: 100" line="color: orange; opacity: 0.5" intersection-spawn="event: click; currentTemplate: #basicBoxTemplate; templates: #boxesTemplate, #layoutTemplate, #basicBoxTemplate" position="0 0 -0.5"
                               geometry="primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32"
                               material="color: white; shader: flat"
-                            ></a-cursor>
+                            >
+                            <a-entity id="cursor-menu" select-bar="controllerID: cursor" scale="0.7 0.7 0.7" position="0 -0.2 0.2" rotation="0 0 0">
+                                <optgroup class="cursor-options" label="Blocks" value="blocks">
+                                    <option value="#layoutTemplate" src="#grid1x1-texture" selected>Layout</option>
+                                    <option value="#basicBoxTemplate" src="#grid1x1-texture" selected>BasicBox</option>
+                                    <option value="#boxesTemplate" src="#grid1x1-texture" selected>Boxes</option>
+                                </optgroup>
+                            </a-entity>
+                        </a-cursor>
+
                 </a-camera>
                 <a-entity id="rhand" class="right-controller"></a-entity>
                 <a-entity id="lhand" class="left-controller"></a-entity>
