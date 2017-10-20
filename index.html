@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>DistrictTool</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+<meta name="district-tool/config/environment" content="%7B%22modulePrefix%22%3A%22district-tool%22%2C%22environment%22%3A%22development%22%2C%22rootURL%22%3A%22/%22%2C%22locationType%22%3A%22auto%22%2C%22EmberENV%22%3A%7B%22FEATURES%22%3A%7B%7D%2C%22EXTEND_PROTOTYPES%22%3A%7B%22Date%22%3Afalse%7D%7D%2C%22APP%22%3A%7B%22name%22%3A%22district-tool%22%2C%22version%22%3A%220.0.0+07469fc4%22%7D%2C%22exportApplicationGlobal%22%3Atrue%7D" />
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link integrity="" rel="stylesheet" href="/assets/vendor.css">
+    <link integrity="" rel="stylesheet" href="/assets/district-tool.css">
+
+    <!-- TODO: find a workaround for this. A-Frame templates must go outside compiled code, otherwise position is not honored -->
+    <script id="box1Template" type="text/html">
+      <a-box shadow width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
+      <a-box shadow width="0.2" height="1" depth="0.2" position="-0.2 0.5 0.2"></a-box>
+      <a-box shadow width="0.2" height="1" depth="0.2" position="0.2 0.5 0"></a-box>
+      <a-box shadow width="1" height="0.2" depth="1"></a-box>
+    </script>
+
+    <script id="box2Template" type="text/html">
+      <a-box shadow></a-box>
+    </script>
+
+    <a-entity id="box3Template" type="text/html">
+      <a-entity layout="type: box; margin: 0.5; columns:2; plane: xz" position="-0.25 0 -0.25">
+        <a-entity>
+          <a-box shadow width="0.2" height="4" depth="0.2" position="0 -2 0"></a-box>
+        </a-entity>
+        <a-entity>
+          <a-box shadow width="0.2" height="3" depth="0.2" position="0 -1.5 0"></a-box>
+        </a-entity>
+        <a-entity>
+          <a-box shadow width="0.2" height="2" depth="0.2" position="0 -1 0"></a-box>
+        </a-entity>
+        <a-entity>
+          <a-box shadow width="0.2" height="1" depth="0.2" position="0 -0.5 0"></a-box>
+        </a-entity>
+      </a-entity>
+      <a-box shadow width="1" height="0.2" depth="1"></a-box>
+    </a-entity>
+
+    <script id="box4Template" type="text/html">
+      <a-box shadow></a-box>
+    </script>
+
+    <script id="box5Template" type="text/html">
+      <a-box shadow></a-box>
+    </script>
+
+    <script id="box6Template" type="text/html">
+      <a-box shadow></a-box>
+    </script>
+
+    
+  </head>
+  <body>
+
+    
+
+    <script src="/assets/vendor.js"></script>
+    <script src="/assets/district-tool.js"></script>
+
+    
+  </body>
+</html>
