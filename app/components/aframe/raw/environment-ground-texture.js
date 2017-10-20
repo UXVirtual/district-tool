@@ -1,3 +1,5 @@
+//import THREE from 'npm:three';
+
 export default {
 
     schema: {
@@ -10,13 +12,16 @@ export default {
 
         this.el.object3D.traverse(function(child){
 
-            if(child instanceof THREE.Mesh){
+            if(child.type === "Mesh"){
+
+
+                //console.log('Child el: ',child.el);
 
                 if(child.geometry.type === "PlaneGeometry"){
 
                     if(this.data.src){
                         var loader = new THREE.TextureLoader();
-                        if (this.data.crossorigin) texloader.setCrossOrigin(self.data.crossorigin);
+                        if (this.data.crossorigin) loader.setCrossOrigin(self.data.crossorigin);
                         loader.load(
                             this.data.src.getAttribute('src'),
                             function ( texture ) {
@@ -28,9 +33,30 @@ export default {
                     }else{
                         child.material.map.repeat.x = this.data.repeat;
                         child.material.map.repeat.y = this.data.repeat;
+
                     }
+
+                    child.el.classList.add('collidable');
+
+
                 }
+
+
             }
         }.bind(this));
+
+
+        //child.el.addClass('clickable');
+
+        /*for(var i = 0; i < this.el.children.length; i++){
+
+            console.log('Clickable: ',this.el.children[i].object3D);
+
+            if(this.el.children[i].object3D.geometry.type === "PlaneGeometry"){
+
+            }
+        }*/
+
+
     }
 };
