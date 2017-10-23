@@ -3,8 +3,8 @@ import AFRAME from 'aframe';
 /**
  * Spawn entity at the intersection point on click, given the properties passed.
  *
- * `<a-entity intersection-spawn-multi="mixin: box; material.color: red">` will spawn
- * `<a-entity mixin="box" material="color: red">` at intersection point.
+ * <a-entity intersection-spawn-multi="mixin: box; material.color: red"> will spawn
+ * <a-entity mixin="box" material="color: red"> at intersection point.
  */
 export default {
     dependencies: ['position'],

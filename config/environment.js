@@ -4,8 +4,8 @@
 module.exports = function(environment) {
   let ENV = {
     modulePrefix: 'district-tool',
-    environment,
-    rootURL: '/',
+    environment: 'development',
+    rootURL: '/district-tool',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -44,7 +44,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV.rootURL = '/district-tool';
   }
 
   return ENV;

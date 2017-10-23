@@ -1,6 +1,6 @@
 /**
- * Snap entity to the closest interval specified by `snap`.
- * Offset entity by `offset`.
+ * Snap entity to the closest interval specified by 'snap'.
+ * Offset entity by 'offset'.
  */
 import AFRAME from 'aframe';
 

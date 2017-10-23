@@ -12,6 +12,8 @@
   "repository": "",
   "scripts": {
     "build": "ember build",
+    "build:prod": "ember build --environment=production",
+    "ghpages": "npm run build && node_modules/.bin/gh-pages -d dist",
     "start": "ember server",
     "test": "ember test"
   },
@@ -49,6 +51,7 @@
     "ember-resolver": "^4.0.0",
     "ember-source": "~2.15.0",
     "ember-welcome-page": "^3.0.0",
+    "gh-pages": "^1.0.0",
     "loader.js": "^4.2.3",
     "networked-aframe": "^0.3.1",
     "semantic-ui-ember": "^2.0.1",
