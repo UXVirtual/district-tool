@@ -15,6 +15,11 @@ define('district-tool/tests/app.lint-test', [], function () {
     assert.ok(true, 'components/aframe/land-component.js should pass ESLint\n\n');
   });
 
+  QUnit.test('components/aframe/raw/colorize.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'components/aframe/raw/colorize.js should pass ESLint\n\n');
+  });
+
   QUnit.test('components/aframe/raw/environment-ground-texture.js', function (assert) {
     assert.expect(1);
     assert.ok(false, 'components/aframe/raw/environment-ground-texture.js should pass ESLint\n\n23:42 - \'THREE\' is not defined. (no-undef)');
@@ -40,9 +45,19 @@ define('district-tool/tests/app.lint-test', [], function () {
     assert.ok(false, 'components/aframe/raw/lod.js should pass ESLint\n\n1:8 - \'AFRAME\' is defined but never used. (no-unused-vars)\n5:36 - \'THREE\' is not defined. (no-undef)');
   });
 
+  QUnit.test('components/aframe/raw/scene.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'components/aframe/raw/scene.js should pass ESLint\n\n6:9 - Unexpected console statement. (no-console)\n9:13 - Unexpected console statement. (no-console)');
+  });
+
   QUnit.test('components/aframe/raw/snap.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/aframe/raw/snap.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('components/aframe/raw/spawn-in-circle.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'components/aframe/raw/spawn-in-circle.js should pass ESLint\n\n');
   });
 
   QUnit.test('components/transformer-grid.js', function (assert) {
@@ -67,7 +82,7 @@ define('district-tool/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/editor.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'routes/editor.js should pass ESLint\n\n');
+    assert.ok(false, 'routes/editor.js should pass ESLint\n\n140:13 - Unexpected console statement. (no-console)\n144:13 - Unexpected console statement. (no-console)\n148:13 - Unexpected console statement. (no-console)\n152:13 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('routes/index.js', function (assert) {

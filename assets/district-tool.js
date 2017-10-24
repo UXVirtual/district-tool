@@ -432,6 +432,29 @@ define('district-tool/components/aframe/land-component', ['exports', 'ember-afra
 
     exports.default = LANDComponent;
 });
+define('district-tool/components/aframe/raw/colorize', ['exports'], function (exports) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = {
+        schema: {
+            color: { type: 'color', default: 'red' }
+        },
+        init: function init() {
+            this.el.addEventListener('componentinitialized', function () {
+                this.setColor(this.el);
+            }.bind(this));
+            this.el.addEventListener('child-attached', function (evt) {
+                this.setColor(evt.detail.el);
+            }.bind(this));
+        },
+        setColor: function setColor(el) {
+            el.setAttribute('material', 'color', this.data.color);
+        }
+    };
+});
 define('district-tool/components/aframe/raw/environment-ground-texture', ['exports'], function (exports) {
     'use strict';
 
@@ -618,6 +641,12 @@ define('district-tool/components/aframe/raw/intersection-spawn', ['exports', 'af
 
             this.el.addEventListener(this.data.event, function (evt) {
 
+                var head = document.querySelector('#player .head');
+
+                //console.log('Avatar head: ',head);
+
+                var material = head.getAttribute('material');
+                var color = material.color;
                 var targetEl = evt.detail.intersectedEl;
                 var targetElClass = targetEl.getAttribute('class');
 
@@ -636,13 +665,15 @@ define('district-tool/components/aframe/raw/intersection-spawn', ['exports', 'af
 
                     sceneEl.appendChild(entity);
 
-                    /*var spawnEl = window.NAF.entities.createNetworkEntity(this.data.currentTemplate, pos, '0 0 0');
-                    window.NAF.utils.whenEntityLoaded(spawnEl, function() {
-                        var spawnEvent = new CustomEvent('spawnEvent', {'detail': {
-                            target: spawnEl
-                        }});
-                        el.dispatchEvent(spawnEvent);
-                    });*/
+                    //var spawnEl = window.NAF.entities.createNetworkEntity(this.data.currentTemplate, pos, '0 0 0');
+                    window.NAF.utils.whenEntityLoaded(entity, function () {
+                        entity.setAttribute('colorize', 'color', color);
+
+                        var spawnEvent = new CustomEvent('spawnEvent', { 'detail': {
+                                target: entity
+                            } });
+                        this.el.dispatchEvent(spawnEvent);
+                    }.bind(this));
                 }
             }.bind(this));
 
@@ -703,6 +734,33 @@ define('district-tool/components/aframe/raw/lod', ['exports', 'aframe'], functio
         }
     };
 });
+define('district-tool/components/aframe/raw/scene', ['exports'], function (exports) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = {
+        init: function init() {
+
+            var scene = document.querySelector('a-scene');
+
+            console.log('Scene: ', scene);
+
+            scene.addEventListener('loaded', function () {
+                console.log('loaded');
+                /*var gltfTest = document.getElementById('test-gltf');
+                 gltfTest.addEventListener('model-loaded',function(e){
+                    console.log('Loaded gltf: ', e);
+                });
+                 gltfTest.addEventListener('model-error',function(e){
+                    console.log('gltf errror: ', e);
+                });
+                 console.log('gltfTest',gltfTest.object3D);*/
+            });
+        }
+    };
+});
 define('district-tool/components/aframe/raw/snap', ['exports', 'aframe'], function (exports, _aframe) {
     'use strict';
 
@@ -730,6 +788,43 @@ define('district-tool/components/aframe/raw/snap', ['exports', 'aframe'], functi
             pos.z = Math.floor(pos.z / data.snap.z) * data.snap.z + data.offset.z;
 
             this.el.setAttribute('position', pos);
+        }
+    };
+});
+define('district-tool/components/aframe/raw/spawn-in-circle', ['exports'], function (exports) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = {
+        schema: {
+            radius: { type: 'number', default: 1 }
+        },
+
+        init: function init() {
+            var el = this.el;
+            var center = el.getAttribute('position');
+
+            var angleRad = this.getRandomAngleInRadians();
+            var circlePoint = this.randomPointOnCircle(this.data.radius, angleRad);
+            var worldPoint = { x: circlePoint.x + center.x, y: center.y, z: circlePoint.y + center.z };
+            el.setAttribute('position', worldPoint);
+
+            var angleDeg = angleRad * 180 / Math.PI;
+            var angleToCenter = -1 * angleDeg + 90;
+            var rotationStr = '0 ' + angleToCenter + ' 0';
+            el.setAttribute('rotation', rotationStr);
+        },
+
+        getRandomAngleInRadians: function getRandomAngleInRadians() {
+            return Math.random() * Math.PI * 2;
+        },
+
+        randomPointOnCircle: function randomPointOnCircle(radius, angleRad) {
+            var x = Math.cos(angleRad) * radius;
+            var y = Math.sin(angleRad) * radius;
+            return { x: x, y: y };
         }
     };
 });
@@ -1464,7 +1559,7 @@ define('district-tool/router', ['exports', 'district-tool/config/environment'], 
 
   exports.default = Router;
 });
-define('district-tool/routes/editor', ['exports', 'aframe', 'npm:aframe-extras', 'district-tool/components/aframe/raw/environment-ground-texture', 'district-tool/components/aframe/raw/intersection-spawn', 'district-tool/components/aframe/raw/snap', 'npm:super-hands', 'npm:aframe-environment-component', 'npm:aframe-star-system-component', 'npm:networked-aframe', 'npm:aframe-event-set-component', 'npm:aframe-layout-component', 'npm:aframe-select-bar-component'], function (exports, _aframe, _npmAframeExtras, _environmentGroundTexture, _intersectionSpawn, _snap) {
+define('district-tool/routes/editor', ['exports', 'aframe', 'npm:aframe-extras', 'district-tool/components/aframe/raw/environment-ground-texture', 'district-tool/components/aframe/raw/intersection-spawn', 'district-tool/components/aframe/raw/snap', 'district-tool/components/aframe/raw/spawn-in-circle', 'district-tool/components/aframe/raw/scene', 'district-tool/components/aframe/raw/colorize', 'npm:super-hands', 'npm:aframe-environment-component', 'npm:aframe-star-system-component', 'npm:networked-aframe', 'npm:aframe-event-set-component', 'npm:aframe-layout-component', 'npm:aframe-select-bar-component', 'npm:aframe-randomizer-components', 'npm:aframe-gblock'], function (exports, _aframe, _npmAframeExtras, _environmentGroundTexture, _intersectionSpawn, _snap, _spawnInCircle, _scene, _colorize) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -1478,12 +1573,14 @@ define('district-tool/routes/editor', ['exports', 'aframe', 'npm:aframe-extras',
         AFRAME.registerComponent('fillable', Fillable);
     }*/
 
+    //import Fillable from '../components/aframe/raw/fillable';
+    if (!_aframe.default.components['gltf-model-next']) {
+        _aframe.default.registerComponent('gltf-model-next', _npmAframeExtras.default.loaders['gltf-model-next']);
+    }
+
     if (!_aframe.default.components['environment-ground-texture']) {
         _aframe.default.registerComponent('environment-ground-texture', _environmentGroundTexture.default);
     }
-
-    //import Fillable from '../components/aframe/raw/fillable';
-
 
     if (!_aframe.default.components['intersection-spawn']) {
         _aframe.default.registerComponent('intersection-spawn', _intersectionSpawn.default);
@@ -1491,6 +1588,18 @@ define('district-tool/routes/editor', ['exports', 'aframe', 'npm:aframe-extras',
 
     if (!_aframe.default.components['snap']) {
         _aframe.default.registerComponent('snap', _snap.default);
+    }
+
+    if (!_aframe.default.components['spawn-in-circle']) {
+        _aframe.default.registerComponent('spawn-in-circle', _spawnInCircle.default);
+    }
+
+    if (!_aframe.default.components['colorize']) {
+        _aframe.default.registerComponent('colorize', _colorize.default);
+    }
+
+    if (!_aframe.default.systems['scene']) {
+        _aframe.default.registerSystem('scene', _scene.default);
     }
 
     /*if (!AFRAME.components['lod']) {
@@ -1510,6 +1619,36 @@ define('district-tool/routes/editor', ['exports', 'aframe', 'npm:aframe-extras',
         }]
     });
 
+    window.NAF.schemas.add({
+        template: '#three-towers-template',
+        components: ['position', 'colorize']
+    });
+
+    window.NAF.schemas.add({
+        template: '#city-block-template',
+        components: ['position', 'colorize']
+    });
+
+    window.NAF.schemas.add({
+        template: '#pole-block-template',
+        components: ['position', 'colorize']
+    });
+
+    window.NAF.schemas.add({
+        template: '#regular-block-template',
+        components: ['position', 'colorize']
+    });
+
+    window.NAF.schemas.add({
+        template: '#industrial-stack-template',
+        components: ['position', 'colorize']
+    });
+
+    window.NAF.schemas.add({
+        template: '#orb-block-template',
+        components: ['position', 'colorize']
+    });
+
     window.NAF.options.compressSyncPackets = true;
     window.NAF.options.updateRate = 15;
 
@@ -1518,7 +1657,26 @@ define('district-tool/routes/editor', ['exports', 'aframe', 'npm:aframe-extras',
 
     //TODO: remove aframe body/html markup when component unmounts
 
-    exports.default = Ember.Route.extend({});
+
+    exports.default = Ember.Route.extend({
+        init: function init() {
+            document.body.addEventListener('clientConnected', function (evt) {
+                console.log('clientConnected event. clientId =', evt.detail.clientId);
+            });
+
+            document.body.addEventListener('clientDisconnected', function (evt) {
+                console.log('clientDisconnected event. clientId =', evt.detail.clientId);
+            });
+
+            document.body.addEventListener('entityCreated', function (evt) {
+                console.log('entityCreated event. ', evt.detail);
+            });
+
+            document.body.addEventListener('entityDeleted', function (evt) {
+                console.log('entityDeleted event. ', evt.detail);
+            });
+        }
+    });
 });
 define('district-tool/routes/index', ['exports'], function (exports) {
   'use strict';
@@ -1691,7 +1849,7 @@ define("district-tool/templates/editor", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "7Qj7kjTu", "block": "{\"symbols\":[],\"statements\":[[4,\"ui-nag\",null,[[\"class\"],[\"inline\"]],{\"statements\":[[0,\"    \"],[6,\"span\"],[9,\"class\",\"title\"],[7],[0,\"\\n    Use the WSAD keys to move and the mouse to look. Click and grab objects in the scene.\\n  \"],[8],[0,\"\\n    \"],[6,\"i\"],[9,\"class\",\"close icon\"],[7],[8],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\"],[5,\"a-scene\",[[9,\"stats\",\"\"],[9,\"physics\",\"\"],[9,\"vr-mode-ui\",\"enabled: true\"],[9,\"networked-scene\",\"\\n  serverURL: https://haydenlee.io;\\n  app: district-tool;\\n  room: Aetheria;\\n  connectOnLoad: true;\\n  adapter: easyrtc;\\n  audio: false;\\n  debug: false;\\n\"]],[[],[]],{\"statements\":[[0,\"\\n    \"],[5,\"a-assets\",[],[[],[]],{\"statements\":[[0,\"\\n\\n        \"],[2,\" Mixins \"],[0,\"\\n\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube\"],[9,\"hoverable\",\"\"],[9,\"shadow\",\"\"],[9,\"grabbable\",\"\"],[9,\"drag-droppable\",\"\"],[9,\"dynamic-body\",\"\"],[9,\"geometry\",\"primitive: box; width: 1.1; height: 1.1; depth: 1.1\"],[9,\"material\",\"transparent: true; opacity: 0\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-hovered\"],[9,\"material\",\"opacity: 0.7; color: purple\"]],[[],[]],{\"statements\":[[0,\"\\n        \"]],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-dragover\"],[9,\"material\",\"opacity: 0.7; color: green\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-dragover-stop\"],[9,\"material\",\"opacity: 0.7; color: purple\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[2,\"<a-mixin id=\\\"transformer\\\" drag-droppable\\n                 fillable\\n                  material=\\\"shader:flat; wireframe: false; transparent: true; opacity: 0.2; color: pink; side: double\\\"\\n                  geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-inv\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false; transparent: true; opacity: 0.2; color: purple; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-opaque\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false; transparent: false; opacity: 1; color: pink; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-inv-opaque\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false;  transparent: false; opacity: 1; color: purple; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\"],[0,\"\\n\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-inv-dragover\"],[9,\"material\",\"opacity: 0.1\"],[9,\"material\",\"color: #00ff00\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-inv-dragover-stop\"],[9,\"material\",\"opacity: 0.2\"],[9,\"material\",\"color: purple\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-dragover\"],[9,\"material\",\"opacity: 0.1\"],[9,\"material\",\"color: #00ff00\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-dragover-stop\"],[9,\"material\",\"opacity: 0.2\"],[9,\"material\",\"color: pink\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[2,\" Templates \"],[0,\"\\n\\n        \"],[2,\" Player \"],[0,\"\\n        \"],[6,\"script\"],[9,\"id\",\"player-template\"],[9,\"type\",\"text/html\"],[7],[0,\"\\n            \"],[5,\"a-entity\",[],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[8],[0,\"\\n\\n        \"],[2,\" Head \"],[0,\"\\n        \"],[6,\"script\"],[9,\"id\",\"head-template\"],[9,\"type\",\"text/html\"],[7],[0,\"\\n            \"],[5,\"a-entity\",[[9,\"class\",\"avatar\"]],[[],[]],{\"statements\":[[0,\"\\n                \"],[5,\"a-sphere\",[[9,\"class\",\"head\"],[9,\"color\",\"#5985ff\"],[9,\"scale\",\"0.3 0.35 0.25\"],[9,\"random-color\",\"\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n                \"],[5,\"a-entity\",[[9,\"class\",\"face\"],[9,\"position\",\"0 0.05 0\"]],[[],[]],{\"statements\":[[0,\"\\n                    \"],[5,\"a-sphere\",[[9,\"class\",\"eye\"],[9,\"color\",\"#efefef\"],[9,\"position\",\"0.1 0.1 -0.2\"],[9,\"scale\",\"0.12 0.12 0.12\"]],[[],[]],{\"statements\":[[0,\"\\n                        \"],[5,\"a-sphere\",[[9,\"class\",\"pupil\"],[9,\"color\",\"#000\"],[9,\"position\",\"0 0 -1\"],[9,\"scale\",\"0.2 0.2 0.2\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n                    \"]],\"parameters\":[]}],[0,\"\\n                    \"],[5,\"a-sphere\",[[9,\"class\",\"eye\"],[9,\"color\",\"#efefef\"],[9,\"position\",\"-0.1 0.1 -0.2\"],[9,\"scale\",\"0.12 0.12 0.12\"]],[[],[]],{\"statements\":[[0,\"\\n                        \"],[5,\"a-sphere\",[[9,\"class\",\"pupil\"],[9,\"color\",\"#000\"],[9,\"position\",\"0 0 -1\"],[9,\"scale\",\"0.2 0.2 0.2\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n                    \"]],\"parameters\":[]}],[0,\"\\n                \"]],\"parameters\":[]}],[0,\"\\n            \"]],\"parameters\":[]}],[0,\"\\n        \"],[8],[0,\"\\n\\n        \"],[2,\" Hand \"],[0,\"\\n        \"],[6,\"script\"],[9,\"id\",\"hand-template\"],[9,\"type\",\"text/html\"],[7],[0,\"\\n            \"],[5,\"a-box\",[[9,\"scale\",\"0.1 0.1 0.1\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[8],[0,\"\\n\\n        \"],[2,\" Box \"],[0,\"\\n        \"],[6,\"script\"],[9,\"id\",\"box-template\"],[9,\"type\",\"text/html\"],[7],[0,\"\\n            \"],[5,\"a-box\",[[9,\"mixin\",\"cube\"],[9,\"class\",\"cube\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[8],[0,\"\\n\\n        \"],[2,\" /Templates \"],[0,\"\\n\\n        \"],[6,\"img\"],[9,\"id\",\"grid1x1-texture\"],[9,\"src\",\"assets/img/textures/grid.png\"],[7],[8],[0,\"\\n\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"env_arrow\"],[9,\"src\",\"assets/obj/env_arrow.obj\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n    \"]],\"parameters\":[]}],[0,\"\\n        \"],[2,\" progressive controls must have all objects the raycaster can interact with set or they will not fire events \"],[0,\"\\n\\n\\n            \"],[5,\"a-entity\",[[9,\"position\",\"0 3 0\"],[9,\"progressive-controls\",\"objects: .cube, .collidable, .transformer; maxLevel: point\"]],[[],[]],{\"statements\":[[0,\"\\n                \"],[5,\"a-camera\",[[9,\"super-hands\",\"\"],[9,\"universal-controls\",\"\"]],[[],[]],{\"statements\":[[0,\"\\n                        \"],[5,\"a-cursor\",[[9,\"id\",\"cursor\"],[9,\"raycaster\",\"showLine: true; far: 100\"],[9,\"line\",\"color: orange; opacity: 0.5\"],[9,\"intersection-spawn\",\"event: click; currentTemplate: #box1Template; templates: #box1Template, #box2Template, #box3Template, #box4Template, #box5Template\"],[9,\"position\",\"0 0 -0.5\"],[9,\"geometry\",\"primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32\"],[9,\"material\",\"color: white; shader: flat\"]],[[],[]],{\"statements\":[[0,\"\\n                            \"],[5,\"a-entity\",[[9,\"id\",\"cursor-menu\"],[9,\"select-bar\",\"controllerID: cursor\"],[9,\"scale\",\"0.7 0.7 0.7\"],[9,\"position\",\"0 -0.2 0.2\"],[9,\"rotation\",\"0 0 0\"]],[[],[]],{\"statements\":[[0,\"\\n                                \"],[6,\"optgroup\"],[9,\"class\",\"cursor-options\"],[9,\"label\",\"Blocks\"],[9,\"value\",\"blocks\"],[7],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#box1Template\"],[9,\"src\",\"#grid1x1-texture\"],[9,\"selected\",\"\"],[7],[0,\"Box1\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#box2Template\"],[9,\"src\",\"#grid1x1-texture\"],[9,\"selected\",\"\"],[7],[0,\"Box2\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#box3Template\"],[9,\"src\",\"#grid1x1-texture\"],[9,\"selected\",\"\"],[7],[0,\"Box3\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#box4Template\"],[9,\"src\",\"#grid1x1-texture\"],[9,\"selected\",\"\"],[7],[0,\"Box4\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#box5Template\"],[9,\"src\",\"#grid1x1-texture\"],[9,\"selected\",\"\"],[7],[0,\"Box5\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#box6Template\"],[9,\"src\",\"#grid1x1-texture\"],[9,\"selected\",\"\"],[7],[0,\"Box6\"],[8],[0,\"\\n                                \"],[8],[0,\"\\n                            \"]],\"parameters\":[]}],[0,\"\\n                        \"]],\"parameters\":[]}],[0,\"\\n\\n                \"]],\"parameters\":[]}],[0,\"\\n                \"],[5,\"a-entity\",[[9,\"id\",\"rhand\"],[9,\"class\",\"right-controller\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n                \"],[5,\"a-entity\",[[9,\"id\",\"lhand\"],[9,\"class\",\"left-controller\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n            \"]],\"parameters\":[]}],[0,\"\\n\\n    \"],[2,\" ground collider keeps objets from falling \"],[0,\"\\n    \"],[5,\"a-box\",[[9,\"position\",\"0 -3 0\"],[9,\"snap-surface\",\"\"],[9,\"static-body\",\"\"],[9,\"class\",\"collidable\"],[9,\"color\",\"#000000\"],[9,\"width\",\"100\"],[9,\"height\",\"10\"],[9,\"depth\",\"100\"],[9,\"visible\",\"false\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n    \"],[5,\"a-entity\",[[9,\"position\",\"0 2 0\"],[9,\"environment\",\"playArea: 1; preset: tron; shadow: false; shadowSize: 256; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; groundTexture: checkerboard; groundColor: #030f22; groundColor2: #04142e; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb\"],[9,\"environment-ground-texture\",\"repeat: 10.1\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n    \"],[5,\"a-entity\",[[9,\"position\",\"0 0 0\"],[9,\"star-system\",\"radius: 100; color: #ee75eb; size: 2; count: 1000; texture: assets/img/textures/plus.svg\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\"]],\"parameters\":[]}]],\"hasEval\":false}", "meta": { "moduleName": "district-tool/templates/editor.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "84FuAvUN", "block": "{\"symbols\":[],\"statements\":[[4,\"ui-nag\",null,[[\"class\"],[\"inline\"]],{\"statements\":[[0,\"    \"],[6,\"span\"],[9,\"class\",\"title\"],[7],[0,\"\\n    Use the WSAD keys to move and the mouse to look. Click and grab objects in the scene.\\n  \"],[8],[0,\"\\n    \"],[6,\"i\"],[9,\"class\",\"close icon\"],[7],[8],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\"],[5,\"a-scene\",[[9,\"physics\",\"\"],[9,\"vr-mode-ui\",\"enabled: true\"],[9,\"networked-scene\",\"\\n  serverURL: https://haydenlee.io;\\n  app: district-tool;\\n  room: Aetheria;\\n  connectOnLoad: true;\\n  adapter: easyrtc;\\n  audio: false;\\n  debug: false;\\n\"]],[[],[]],{\"statements\":[[0,\"\\n    \"],[5,\"a-assets\",[],[[],[]],{\"statements\":[[0,\"\\n\\n        \"],[2,\" Mixins \"],[0,\"\\n\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube\"],[9,\"hoverable\",\"\"],[9,\"shadow\",\"\"],[9,\"grabbable\",\"\"],[9,\"drag-droppable\",\"\"],[9,\"dynamic-body\",\"\"],[9,\"geometry\",\"primitive: box; width: 1.1; height: 1.1; depth: 1.1\"],[9,\"material\",\"transparent: true; opacity: 0\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-hovered\"],[9,\"material\",\"opacity: 0.7; color: purple\"]],[[],[]],{\"statements\":[[0,\"\\n        \"]],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-dragover\"],[9,\"material\",\"opacity: 0.7; color: green\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-dragover-stop\"],[9,\"material\",\"opacity: 0.7; color: purple\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[2,\"<a-mixin id=\\\"transformer\\\" drag-droppable\\n                 fillable\\n                  material=\\\"shader:flat; wireframe: false; transparent: true; opacity: 0.2; color: pink; side: double\\\"\\n                  geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-inv\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false; transparent: true; opacity: 0.2; color: purple; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-opaque\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false; transparent: false; opacity: 1; color: pink; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-inv-opaque\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false;  transparent: false; opacity: 1; color: purple; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\"],[0,\"\\n\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-inv-dragover\"],[9,\"material\",\"opacity: 0.1\"],[9,\"material\",\"color: #00ff00\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-inv-dragover-stop\"],[9,\"material\",\"opacity: 0.2\"],[9,\"material\",\"color: purple\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-dragover\"],[9,\"material\",\"opacity: 0.1\"],[9,\"material\",\"color: #00ff00\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-dragover-stop\"],[9,\"material\",\"opacity: 0.2\"],[9,\"material\",\"color: pink\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[6,\"img\"],[9,\"id\",\"grid1x1-texture\"],[9,\"src\",\"assets/img/textures/grid.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"three-towers-texture\"],[9,\"src\",\"assets/img/textures/blocks/three-towers.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"city-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/city-block.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"pole-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/pole-block.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"regular-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/regular-block.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"industrial-stack-texture\"],[9,\"src\",\"assets/img/textures/blocks/industrial-stack.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"orb-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/orb-block.png\"],[7],[8],[0,\"\\n\\n\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"env_arrow\"],[9,\"src\",\"assets/obj/env_arrow.obj\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"hmd-obj-model\"],[9,\"src\",\"assets/obj/simple-vr-hmd/model.obj\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"hmd-obj-mtl\"],[9,\"src\",\"assets/obj/simple-vr-hmd/materials.mtl\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[2,\" Simple VR HMD by Aaron Clifford - https://vr.google.com/u/2/objects/aG7h3TTjc51 \"],[0,\"\\n\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"city-block-model\"],[9,\"src\",\"assets/obj/city-block/model.obj\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"city-block-mtl\"],[9,\"src\",\"assets/obj/city-block/materials.mtl\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[2,\" City Block by Alex Safayan - https://vr.google.com/u/2/objects/cDhy17AP_FO \"],[0,\"\\n\\n    \"]],\"parameters\":[]}],[0,\"\\n        \"],[2,\" progressive controls must have all objects the raycaster can interact with set or they will not fire events \"],[0,\"\\n            \"],[5,\"a-entity\",[[9,\"id\",\"player\"],[9,\"progressive-controls\",\"objects: .cube, .collidable, .transformer; maxLevel: point\"]],[[],[]],{\"statements\":[[0,\"\\n                \"],[5,\"a-camera\",[[9,\"super-hands\",\"\"],[9,\"universal-controls\",\"\"],[9,\"networked\",\"template:#head-template;showLocalTemplate:false;\"],[9,\"position\",\"0 3 0\"],[9,\"spawn-in-circle\",\"radius:3;\"]],[[],[]],{\"statements\":[[0,\"\\n                        \"],[5,\"a-cursor\",[[9,\"id\",\"cursor\"],[9,\"raycaster\",\"showLine: true; far: 100\"],[9,\"line\",\"color: orange; opacity: 0.5\"],[9,\"intersection-spawn\",\"event: click; currentTemplate: #three-towers-template; templates: #three-towers-template, #city-block-template, #pole-block-template, #regular-block-template, #industrial-stack-template, #orb-block-template\"],[9,\"position\",\"0 0 -0.5\"],[9,\"geometry\",\"primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32\"],[9,\"material\",\"color: white; shader: flat\"]],[[],[]],{\"statements\":[[0,\"\\n                            \"],[5,\"a-entity\",[[9,\"id\",\"cursor-menu\"],[9,\"select-bar\",\"controllerID: cursor\"],[9,\"scale\",\"0.7 0.7 0.7\"],[9,\"position\",\"0 -0.2 0.2\"],[9,\"rotation\",\"0 0 0\"]],[[],[]],{\"statements\":[[0,\"\\n                                \"],[6,\"optgroup\"],[9,\"class\",\"cursor-options\"],[9,\"label\",\"Blocks\"],[9,\"value\",\"blocks\"],[7],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#three-towers-template\"],[9,\"src\",\"#three-towers-texture\"],[9,\"selected\",\"\"],[7],[0,\"3 Towers\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#city-block-template\"],[9,\"src\",\"#city-block-texture\"],[9,\"selected\",\"\"],[7],[0,\"City\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#pole-block-template\"],[9,\"src\",\"#pole-block-texture\"],[9,\"selected\",\"\"],[7],[0,\"Poles\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#regular-block-template\"],[9,\"src\",\"#regular-block-texture\"],[9,\"selected\",\"\"],[7],[0,\"Regular\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#industrial-stack-template\"],[9,\"src\",\"#industrial-stack-texture\"],[9,\"selected\",\"\"],[7],[0,\"Industrial\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#orb-block-template\"],[9,\"src\",\"#orb-block-texture\"],[9,\"selected\",\"\"],[7],[0,\"Orb\"],[8],[0,\"\\n                                \"],[8],[0,\"\\n                            \"]],\"parameters\":[]}],[0,\"\\n                        \"]],\"parameters\":[]}],[0,\"\\n\\n                \"]],\"parameters\":[]}],[0,\"\\n                \"],[5,\"a-entity\",[[9,\"id\",\"rhand\"],[9,\"class\",\"right-controller\"],[9,\"networked\",\"template:#right-hand-template\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n                \"],[5,\"a-entity\",[[9,\"id\",\"lhand\"],[9,\"class\",\"left-controller\"],[9,\"networked\",\"template:#left-hand-template\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n            \"]],\"parameters\":[]}],[0,\"\\n\\n    \"],[2,\" ground collider keeps objets from falling \"],[0,\"\\n    \"],[5,\"a-box\",[[9,\"position\",\"0 -3 0\"],[9,\"snap-surface\",\"\"],[9,\"static-body\",\"\"],[9,\"class\",\"collidable\"],[9,\"color\",\"#000000\"],[9,\"width\",\"100\"],[9,\"height\",\"10\"],[9,\"depth\",\"100\"],[9,\"visible\",\"false\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n    \"],[5,\"a-entity\",[[9,\"position\",\"0 2 0\"]],[[],[]],{\"statements\":[[0,\"\\n        \"],[5,\"a-sphere\",[[9,\"shadow\",\"\"],[9,\"radius\",\"0.5\"],[9,\"position\",\"0 0.5 0\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-box\",[[9,\"shadow\",\"\"],[9,\"width\",\"1\"],[9,\"height\",\"0.2\"],[9,\"depth\",\"1\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n    \"]],\"parameters\":[]}],[0,\"\\n\\n\\n    \"],[5,\"a-entity\",[[9,\"position\",\"0 2 0\"],[9,\"environment\",\"playArea: 1; preset: tron; shadow: false; shadowSize: 256; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; groundTexture: checkerboard; groundColor: #030f22; groundColor2: #04142e; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb\"],[9,\"environment-ground-texture\",\"repeat: 10.1\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n    \"],[5,\"a-entity\",[[9,\"position\",\"0 0 0\"],[9,\"star-system\",\"radius: 100; color: #ee75eb; size: 2; count: 1000; texture: assets/img/textures/plus.svg\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\"]],\"parameters\":[]}]],\"hasEval\":false}", "meta": { "moduleName": "district-tool/templates/editor.hbs" } });
 });
 define("district-tool/templates/index", ["exports"], function (exports) {
   "use strict";
@@ -1848,6 +2006,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("district-tool/app")["default"].create({"name":"district-tool","version":"0.0.0+07469fc4"});
+  require("district-tool/app")["default"].create({"name":"district-tool","version":"0.0.0+98e1984e"});
 }
 //# sourceMappingURL=district-tool.map
