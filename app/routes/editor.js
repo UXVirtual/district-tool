@@ -22,6 +22,10 @@ import SpawnInCircle from '../components/aframe/raw/spawn-in-circle';
     AFRAME.registerComponent('fillable', Fillable);
 }*/
 
+if (!AFRAME.components['gltf-model-next']) {
+    AFRAME.registerComponent('gltf-model-next', extras.loaders['gltf-model-next']);
+}
+
 if (!AFRAME.components['environment-ground-texture']) {
     AFRAME.registerComponent('environment-ground-texture', EnvironmentGroundTexture);
 }

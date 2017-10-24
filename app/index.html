@@ -15,6 +15,7 @@
 
     <!-- TODO: find a workaround for this. A-Frame templates must go outside compiled code, otherwise position is not honored -->
 
+    <!-- HMD model by Aaron Clifford - https://vr.google.com/u/2/objects/aG7h3TTjc51 -->
     <script id="head-template" type="text/html">
       <a-entity class="avatar">
         <a-box class="head"
@@ -23,6 +24,7 @@
                material="shader: standard"
                random-color
                 >
+            <a-entity gltf-model="#hmd-model" scale="4 4 4"></a-entity>
           <a-light light="type: point; intensity: 0.75; distance: 50; decay: 2" position="0 0.825 -1.260"></a-light>
         </a-box>
         <a-entity class="face"

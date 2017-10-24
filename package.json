@@ -18,7 +18,7 @@
     "test": "ember test"
   },
   "devDependencies": {
-    "aframe": "^0.7.0",
+    "aframe": "^0.7.1",
     "aframe-environment-component": "^1.0.0",
     "aframe-event-set-component": "^4.0.1",
     "aframe-extras": "^3.12.3",

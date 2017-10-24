@@ -53,6 +53,9 @@
 
         <a-asset-item id="env_arrow" src="assets/obj/env_arrow.obj"></a-asset-item>
 
+        <a-asset-item id="hmd-model" src="assets/gltf/hmd/scene.gltf"></a-asset-item>
+        <a-asset-item id="city-model" src="assets/gltf/city/scene.gltf"></a-asset-item>
+
     </a-assets>
         <!-- progressive controls must have all objects the raycaster can interact with set or they will not fire events -->
 
@@ -82,6 +85,48 @@
 
     <!-- ground collider keeps objets from falling -->
     <a-box position="0 -3 0" snap-surface static-body class="collidable" color="#000000" width=100 height=10 depth=100 visible="false"></a-box>
+
+    <a-entity class="avatar" position="0 3 0">
+        <a-box class="head"
+               color="#5985ff"
+               scale="0.45 0.5 0.4"
+               material="shader: standard"
+               random-color
+                >
+            <a-entity gltf-model="#hmd-model" scale="1 1 1"></a-entity>
+            <a-light light="type: point; intensity: 0.75; distance: 50; decay: 2" position="0 0.825 -1.260"></a-light>
+        </a-box>
+        <a-entity class="face"
+                  position="0 0.05 0"
+                >
+            <a-box class="eye"
+                   color="#efefef"
+                   position="0.16 0.1 -0.2"
+                   scale="0.12 0.12 0.12"
+                   material="shader: standard"
+                    >
+                <a-box class="pupil"
+                       color="#000"
+                       position="0 0 -0.519"
+                       scale="0.2 0.2 0.2"
+                       material="shader: standard"
+                        ></a-box>
+            </a-box>
+            <a-box class="eye"
+                   color="#efefef"
+                   position="-0.16 0.1 -0.2"
+                   scale="0.12 0.12 0.12"
+                   material="shader: standard"
+                    >
+                <a-box class="pupil"
+                       color="#000"
+                       position="0 0 -0.519"
+                       scale="0.2 0.2 0.2"
+                       material="shader: standard"
+                        ></a-box>
+            </a-box>
+        </a-entity>
+    </a-entity>
 
     <a-entity position="0 2 0" environment="playArea: 1; preset: tron; shadow: false; shadowSize: 256; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; groundTexture: checkerboard; groundColor: #030f22; groundColor2: #04142e; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb" environment-ground-texture="repeat: 10.1"></a-entity>
     <a-entity position="0 0 0" star-system="radius: 100; color: #ee75eb; size: 2; count: 1000; texture: assets/img/textures/plus.svg"></a-entity>
