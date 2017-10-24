@@ -135,4 +135,21 @@ extras.controls.registerAll();
 
 
 export default Ember.Route.extend({
+    init: function(){
+        document.body.addEventListener('clientConnected', function (evt) {
+            console.log('clientConnected event. clientId =', evt.detail.clientId);
+        });
+
+        document.body.addEventListener('clientDisconnected', function (evt) {
+            console.log('clientDisconnected event. clientId =', evt.detail.clientId);
+        });
+
+        document.body.addEventListener('entityCreated', function (evt) {
+            console.log('entityCreated event. ', evt.detail);
+        });
+
+        document.body.addEventListener('entityDeleted', function (evt) {
+            console.log('entityDeleted event. ', evt.detail);
+        });
+    }
 });
