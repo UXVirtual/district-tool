@@ -47,6 +47,12 @@ export default {
 
         this.el.addEventListener(this.data.event, function(evt){
 
+            var head = document.querySelector('#player .head');
+
+            //console.log('Avatar head: ',head);
+
+            var material = head.getAttribute('material');
+            var color = material.color;
             var targetEl = evt.detail.intersectedEl;
             var targetElClass = targetEl.getAttribute('class');
 
@@ -60,18 +66,24 @@ export default {
 
                 var entity = document.createElement("a-entity");
 
+
                 entity.setAttribute('position',pos.x+ ' 2.5 '+pos.z);
                 entity.setAttribute('networked','template:'+this.data.currentTemplate+'; showLocalTemplate:true');
 
+
                 sceneEl.appendChild(entity);
 
-                /*var spawnEl = window.NAF.entities.createNetworkEntity(this.data.currentTemplate, pos, '0 0 0');
-                window.NAF.utils.whenEntityLoaded(spawnEl, function() {
+
+
+                //var spawnEl = window.NAF.entities.createNetworkEntity(this.data.currentTemplate, pos, '0 0 0');
+                window.NAF.utils.whenEntityLoaded(entity, function() {
+                    entity.setAttribute('colorize','color',color);
+
                     var spawnEvent = new CustomEvent('spawnEvent', {'detail': {
-                        target: spawnEl
+                        target: entity
                     }});
-                    el.dispatchEvent(spawnEvent);
-                });*/
+                    this.el.dispatchEvent(spawnEvent);
+                }.bind(this));
             }
         }.bind(this));
 

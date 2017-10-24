@@ -9,18 +9,23 @@ import 'npm:aframe-event-set-component';
 import 'npm:aframe-layout-component';
 import 'npm:aframe-select-bar-component';
 import 'npm:aframe-randomizer-components';
+import 'npm:aframe-gblock';
 
 //import Fillable from '../components/aframe/raw/fillable';
 import EnvironmentGroundTexture from '../components/aframe/raw/environment-ground-texture';
 import IntersectionSpawn from '../components/aframe/raw/intersection-spawn';
 import Snap from '../components/aframe/raw/snap';
 import SpawnInCircle from '../components/aframe/raw/spawn-in-circle';
+import Scene from '../components/aframe/raw/scene';
+
+import Colorize from '../components/aframe/raw/colorize';
 //import LOD from '../components/aframe/raw/lod';
 //import LODLevel from '../components/aframe/raw/lod-level';
 
 /*if (!AFRAME.components['fillable']) {
     AFRAME.registerComponent('fillable', Fillable);
 }*/
+
 
 if (!AFRAME.components['gltf-model-next']) {
     AFRAME.registerComponent('gltf-model-next', extras.loaders['gltf-model-next']);
@@ -40,6 +45,14 @@ if (!AFRAME.components['snap']) {
 
 if (!AFRAME.components['spawn-in-circle']) {
     AFRAME.registerComponent('spawn-in-circle', SpawnInCircle);
+}
+
+if (!AFRAME.components['colorize']) {
+    AFRAME.registerComponent('colorize', Colorize);
+}
+
+if (!AFRAME.systems['scene']) {
+    AFRAME.registerSystem('scene', Scene);
 }
 
 /*if (!AFRAME.components['lod']) {
@@ -63,6 +76,54 @@ window.NAF.schemas.add({
     ]
 });
 
+window.NAF.schemas.add({
+    template: '#three-towers-template',
+    components: [
+        'position',
+        'colorize'
+    ]
+});
+
+window.NAF.schemas.add({
+    template: '#city-block-template',
+    components: [
+        'position',
+        'colorize'
+    ]
+});
+
+window.NAF.schemas.add({
+    template: '#pole-block-template',
+    components: [
+        'position',
+        'colorize'
+    ]
+});
+
+window.NAF.schemas.add({
+    template: '#regular-block-template',
+    components: [
+        'position',
+        'colorize'
+    ]
+});
+
+window.NAF.schemas.add({
+    template: '#industrial-stack-template',
+    components: [
+        'position',
+        'colorize'
+    ]
+});
+
+window.NAF.schemas.add({
+    template: '#orb-block-template',
+    components: [
+        'position',
+        'colorize'
+    ]
+});
+
 window.NAF.options.compressSyncPackets = true;
 window.NAF.options.updateRate = 15;
 
@@ -70,6 +131,8 @@ window.NAF.options.updateRate = 15;
 extras.controls.registerAll();
 
 //TODO: remove aframe body/html markup when component unmounts
+
+
 
 export default Ember.Route.extend({
 });

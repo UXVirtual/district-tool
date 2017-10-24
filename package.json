@@ -22,6 +22,7 @@
     "aframe-environment-component": "^1.0.0",
     "aframe-event-set-component": "^4.0.1",
     "aframe-extras": "^3.12.3",
+    "aframe-gblock": "git+https://github.com/archilogic-com/aframe-gblock.git",
     "aframe-layout-component": "^4.3.0",
     "aframe-physics-system": "^2.0.1",
     "aframe-randomizer-components": "^3.0.2",

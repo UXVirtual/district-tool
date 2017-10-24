@@ -50,30 +50,40 @@
         <a-mixin id="transformer-dragover-stop" material="opacity: 0.2" material="color: pink"></a-mixin>
 
         <img id="grid1x1-texture" src="assets/img/textures/grid.png" />
+        <img id="three-towers-texture" src="assets/img/textures/blocks/three-towers.png" />
+        <img id="city-block-texture" src="assets/img/textures/blocks/city-block.png" />
+        <img id="pole-block-texture" src="assets/img/textures/blocks/pole-block.png" />
+        <img id="regular-block-texture" src="assets/img/textures/blocks/regular-block.png" />
+        <img id="industrial-stack-texture" src="assets/img/textures/blocks/industrial-stack.png" />
+        <img id="orb-block-texture" src="assets/img/textures/blocks/orb-block.png" />
+
 
         <a-asset-item id="env_arrow" src="assets/obj/env_arrow.obj"></a-asset-item>
 
-        <a-asset-item id="hmd-model" src="assets/gltf/hmd/scene.gltf"></a-asset-item>
-        <a-asset-item id="city-model" src="assets/gltf/city/scene.gltf"></a-asset-item>
+        <a-asset-item id="hmd-obj-model" src="assets/obj/simple-vr-hmd/model.obj"></a-asset-item>
+        <a-asset-item id="hmd-obj-mtl" src="assets/obj/simple-vr-hmd/materials.mtl"></a-asset-item>
+        <!-- Simple VR HMD by Aaron Clifford - https://vr.google.com/u/2/objects/aG7h3TTjc51 -->
+
+        <a-asset-item id="city-block-model" src="assets/obj/city-block/model.obj"></a-asset-item>
+        <a-asset-item id="city-block-mtl" src="assets/obj/city-block/materials.mtl"></a-asset-item>
+        <!-- City Block by Alex Safayan - https://vr.google.com/u/2/objects/cDhy17AP_FO -->
 
     </a-assets>
         <!-- progressive controls must have all objects the raycaster can interact with set or they will not fire events -->
-
-
             <a-entity id="player" progressive-controls="objects: .cube, .collidable, .transformer; maxLevel: point">
                 <a-camera super-hands universal-controls networked="template:#head-template;showLocalTemplate:false;" position="0 3 0" spawn-in-circle="radius:3;">
-                        <a-cursor id="cursor" raycaster="showLine: true; far: 100" line="color: orange; opacity: 0.5" intersection-spawn="event: click; currentTemplate: #box1Template; templates: #box1Template, #box2Template, #box3Template, #box4Template, #box5Template" position="0 0 -0.5"
+                        <a-cursor id="cursor" raycaster="showLine: true; far: 100" line="color: orange; opacity: 0.5" intersection-spawn="event: click; currentTemplate: #three-towers-template; templates: #three-towers-template, #city-block-template, #pole-block-template, #regular-block-template, #industrial-stack-template, #orb-block-template" position="0 0 -0.5"
                               geometry="primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32"
                               material="color: white; shader: flat"
                             >
                             <a-entity id="cursor-menu" select-bar="controllerID: cursor" scale="0.7 0.7 0.7" position="0 -0.2 0.2" rotation="0 0 0">
                                 <optgroup class="cursor-options" label="Blocks" value="blocks">
-                                    <option value="#box1Template" src="#grid1x1-texture" selected>Box1</option>
-                                    <option value="#box2Template" src="#grid1x1-texture" selected>Box2</option>
-                                    <option value="#box3Template" src="#grid1x1-texture" selected>Box3</option>
-                                    <option value="#box4Template" src="#grid1x1-texture" selected>Box4</option>
-                                    <option value="#box5Template" src="#grid1x1-texture" selected>Box5</option>
-                                    <option value="#box6Template" src="#grid1x1-texture" selected>Box6</option>
+                                    <option value="#three-towers-template" src="#three-towers-texture" selected>3 Towers</option>
+                                    <option value="#city-block-template" src="#city-block-texture" selected>City</option>
+                                    <option value="#pole-block-template" src="#pole-block-texture" selected>Poles</option>
+                                    <option value="#regular-block-template" src="#regular-block-texture" selected>Regular</option>
+                                    <option value="#industrial-stack-template" src="#industrial-stack-texture" selected>Industrial</option>
+                                    <option value="#orb-block-template" src="#orb-block-texture" selected>Orb</option>
                                 </optgroup>
                             </a-entity>
                         </a-cursor>
@@ -86,47 +96,11 @@
     <!-- ground collider keeps objets from falling -->
     <a-box position="0 -3 0" snap-surface static-body class="collidable" color="#000000" width=100 height=10 depth=100 visible="false"></a-box>
 
-    <a-entity class="avatar" position="0 3 0">
-        <a-box class="head"
-               color="#5985ff"
-               scale="0.45 0.5 0.4"
-               material="shader: standard"
-               random-color
-                >
-            <a-entity gltf-model="#hmd-model" scale="1 1 1"></a-entity>
-            <a-light light="type: point; intensity: 0.75; distance: 50; decay: 2" position="0 0.825 -1.260"></a-light>
-        </a-box>
-        <a-entity class="face"
-                  position="0 0.05 0"
-                >
-            <a-box class="eye"
-                   color="#efefef"
-                   position="0.16 0.1 -0.2"
-                   scale="0.12 0.12 0.12"
-                   material="shader: standard"
-                    >
-                <a-box class="pupil"
-                       color="#000"
-                       position="0 0 -0.519"
-                       scale="0.2 0.2 0.2"
-                       material="shader: standard"
-                        ></a-box>
-            </a-box>
-            <a-box class="eye"
-                   color="#efefef"
-                   position="-0.16 0.1 -0.2"
-                   scale="0.12 0.12 0.12"
-                   material="shader: standard"
-                    >
-                <a-box class="pupil"
-                       color="#000"
-                       position="0 0 -0.519"
-                       scale="0.2 0.2 0.2"
-                       material="shader: standard"
-                        ></a-box>
-            </a-box>
-        </a-entity>
+    <a-entity position="0 2 0">
+        <a-sphere shadow radius="0.5" position="0 0.5 0"></a-sphere>
+        <a-box shadow width="1" height="0.2" depth="1"></a-box>
     </a-entity>
+
 
     <a-entity position="0 2 0" environment="playArea: 1; preset: tron; shadow: false; shadowSize: 256; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; groundTexture: checkerboard; groundColor: #030f22; groundColor2: #04142e; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb" environment-ground-texture="repeat: 10.1"></a-entity>
     <a-entity position="0 0 0" star-system="radius: 100; color: #ee75eb; size: 2; count: 1000; texture: assets/img/textures/plus.svg"></a-entity>
