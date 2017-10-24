@@ -8,11 +8,13 @@ import 'npm:networked-aframe';
 import 'npm:aframe-event-set-component';
 import 'npm:aframe-layout-component';
 import 'npm:aframe-select-bar-component';
+import 'npm:aframe-randomizer-components';
 
 //import Fillable from '../components/aframe/raw/fillable';
 import EnvironmentGroundTexture from '../components/aframe/raw/environment-ground-texture';
 import IntersectionSpawn from '../components/aframe/raw/intersection-spawn';
 import Snap from '../components/aframe/raw/snap';
+import SpawnInCircle from '../components/aframe/raw/spawn-in-circle';
 //import LOD from '../components/aframe/raw/lod';
 //import LODLevel from '../components/aframe/raw/lod-level';
 
@@ -30,6 +32,10 @@ if (!AFRAME.components['intersection-spawn']) {
 
 if (!AFRAME.components['snap']) {
     AFRAME.registerComponent('snap', Snap);
+}
+
+if (!AFRAME.components['spawn-in-circle']) {
+    AFRAME.registerComponent('spawn-in-circle', SpawnInCircle);
 }
 
 /*if (!AFRAME.components['lod']) {

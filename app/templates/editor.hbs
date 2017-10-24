@@ -5,7 +5,7 @@
     <i class="close icon"></i>
 {{/ui-nag}}
 
-<a-scene stats physics vr-mode-ui="enabled: true" networked-scene="
+<a-scene physics vr-mode-ui="enabled: true" networked-scene="
   serverURL: https://haydenlee.io;
   app: district-tool;
   room: Aetheria;
@@ -49,62 +49,6 @@
         <a-mixin id="transformer-dragover" material="opacity: 0.1" material="color: #00ff00"></a-mixin>
         <a-mixin id="transformer-dragover-stop" material="opacity: 0.2" material="color: pink"></a-mixin>
 
-        <!-- Templates -->
-
-        <!-- Player -->
-        <script id="player-template" type="text/html">
-            <a-entity></a-entity>
-        </script>
-
-        <!-- Head -->
-        <script id="head-template" type="text/html">
-            <a-entity class="avatar">
-                <a-sphere class="head"
-                          color="#5985ff"
-                          scale="0.3 0.35 0.25"
-                          random-color
-                        ></a-sphere>
-                <a-entity class="face"
-                          position="0 0.05 0"
-                        >
-                    <a-sphere class="eye"
-                              color="#efefef"
-                              position="0.1 0.1 -0.2"
-                              scale="0.12 0.12 0.12"
-                            >
-                        <a-sphere class="pupil"
-                                  color="#000"
-                                  position="0 0 -1"
-                                  scale="0.2 0.2 0.2"
-                                ></a-sphere>
-                    </a-sphere>
-                    <a-sphere class="eye"
-                              color="#efefef"
-                              position="-0.1 0.1 -0.2"
-                              scale="0.12 0.12 0.12"
-                            >
-                        <a-sphere class="pupil"
-                                  color="#000"
-                                  position="0 0 -1"
-                                  scale="0.2 0.2 0.2"
-                                ></a-sphere>
-                    </a-sphere>
-                </a-entity>
-            </a-entity>
-        </script>
-
-        <!-- Hand -->
-        <script id="hand-template" type="text/html">
-            <a-box scale="0.1 0.1 0.1"></a-box>
-        </script>
-
-        <!-- Box -->
-        <script id="box-template" type="text/html">
-            <a-box mixin="cube" class="cube"></a-box>
-        </script>
-
-        <!-- /Templates -->
-
         <img id="grid1x1-texture" src="assets/img/textures/grid.png" />
 
         <a-asset-item id="env_arrow" src="assets/obj/env_arrow.obj"></a-asset-item>
@@ -113,8 +57,8 @@
         <!-- progressive controls must have all objects the raycaster can interact with set or they will not fire events -->
 
 
-            <a-entity position="0 3 0" progressive-controls="objects: .cube, .collidable, .transformer; maxLevel: point">
-                <a-camera super-hands universal-controls>
+            <a-entity id="player" progressive-controls="objects: .cube, .collidable, .transformer; maxLevel: point">
+                <a-camera super-hands universal-controls networked="template:#head-template;showLocalTemplate:false;" position="0 3 0" spawn-in-circle="radius:3;">
                         <a-cursor id="cursor" raycaster="showLine: true; far: 100" line="color: orange; opacity: 0.5" intersection-spawn="event: click; currentTemplate: #box1Template; templates: #box1Template, #box2Template, #box3Template, #box4Template, #box5Template" position="0 0 -0.5"
                               geometry="primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32"
                               material="color: white; shader: flat"
@@ -132,8 +76,8 @@
                         </a-cursor>
 
                 </a-camera>
-                <a-entity id="rhand" class="right-controller"></a-entity>
-                <a-entity id="lhand" class="left-controller"></a-entity>
+                <a-entity id="rhand" class="right-controller" networked="template:#right-hand-template"></a-entity>
+                <a-entity id="lhand" class="left-controller" networked="template:#left-hand-template"></a-entity>
             </a-entity>
 
     <!-- ground collider keeps objets from falling -->
