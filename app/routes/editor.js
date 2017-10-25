@@ -17,7 +17,7 @@ import IntersectionSpawn from '../components/aframe/raw/intersection-spawn';
 import Snap from '../components/aframe/raw/snap';
 import SpawnInCircle from '../components/aframe/raw/spawn-in-circle';
 import Scene from '../components/aframe/raw/scene';
-
+import BlockCursor from '../components/aframe/raw/block-cursor';
 import Colorize from '../components/aframe/raw/colorize';
 //import LOD from '../components/aframe/raw/lod';
 //import LODLevel from '../components/aframe/raw/lod-level';
@@ -49,6 +49,10 @@ if (!AFRAME.components['spawn-in-circle']) {
 
 if (!AFRAME.components['colorize']) {
     AFRAME.registerComponent('colorize', Colorize);
+}
+
+if (!AFRAME.components['block-cursor']) {
+    AFRAME.registerComponent('block-cursor', BlockCursor);
 }
 
 if (!AFRAME.systems['scene']) {
