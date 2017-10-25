@@ -20,6 +20,8 @@ export default {
             var player = document.getElementById('player');
             var myNametag = player.querySelector('.nametag');
             myNametag.setAttribute('text', 'value', username);
+            var myName = player.querySelector('.name');
+            myName.setAttribute('text', 'value', username);
             if(!username){
                 myNametag.setAttribute('visible', false);
             }
