@@ -6,7 +6,8 @@ module.exports = function(environment) {
     modulePrefix: 'district-tool',
     environment: 'development',
     rootURL: '/district-tool',
-    locationType: 'auto',
+    baseURL: 'null',
+    locationType: 'hash',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
