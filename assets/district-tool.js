@@ -440,7 +440,7 @@ define('district-tool/components/aframe/raw/colorize', ['exports'], function (ex
     });
     exports.default = {
         schema: {
-            color: { type: 'color', default: 'red' }
+            color: { type: 'color', default: 'white' }
         },
         init: function init() {
             this.el.addEventListener('componentinitialized', function () {
@@ -449,6 +449,21 @@ define('district-tool/components/aframe/raw/colorize', ['exports'], function (ex
             this.el.addEventListener('child-attached', function (evt) {
                 this.setColor(evt.detail.el);
             }.bind(this));
+        },
+        update: function update() {
+
+            console.log('Updated: ', this.data.color);
+
+            this.setColor(this.el);
+            this.updateChildren(this.el);
+        },
+        updateChildren: function updateChildren(el) {
+            for (var i = 0; i < el.children.length; i++) {
+                this.setColor(el.children[i]);
+                if (el.children[i].children.length > 0) {
+                    this.updateChildren(el.children[i]);
+                }
+            }
         },
         setColor: function setColor(el) {
             el.setAttribute('material', 'color', this.data.color);
@@ -662,12 +677,27 @@ define('district-tool/components/aframe/raw/intersection-spawn', ['exports', 'af
 
                     entity.setAttribute('position', pos.x + ' 2.5 ' + pos.z);
                     entity.setAttribute('networked', 'template:' + this.data.currentTemplate + '; showLocalTemplate:true');
-
                     sceneEl.appendChild(entity);
+
+                    //TODO: set colorize component inside the template then set its attribute here
+
+                    setTimeout(function () {
+                        entity.querySelector('.wrapper').setAttribute('colorize', 'color', color);
+                    }, 500);
 
                     //var spawnEl = window.NAF.entities.createNetworkEntity(this.data.currentTemplate, pos, '0 0 0');
                     window.NAF.utils.whenEntityLoaded(entity, function () {
-                        entity.setAttribute('colorize', 'color', color);
+
+                        var componentData = entity.components.networked.data;
+
+                        console.log(entity.components);
+
+                        console.log('Component data: ', componentData);
+
+                        /*.addEventListener('child-attached',function(evt){
+                            console.log('Set color: ',color,evt.detail.el);
+                            evt.detail.el.setAttribute('colorize','color',color);
+                        }.bind(this));*/
 
                         var spawnEvent = new CustomEvent('spawnEvent', { 'detail': {
                                 target: entity
@@ -734,30 +764,41 @@ define('district-tool/components/aframe/raw/lod', ['exports', 'aframe'], functio
         }
     };
 });
-define('district-tool/components/aframe/raw/scene', ['exports'], function (exports) {
-    'use strict';
+define("district-tool/components/aframe/raw/scene", ["exports"], function (exports) {
+    "use strict";
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.default = {
+
+        makeId: function makeId(length) {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+            for (var i = 0; i < length; i++) {
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+            }return text;
+        },
+
         init: function init() {
 
-            var scene = document.querySelector('a-scene');
+            var sceneEl = document.querySelector('a-scene');
 
-            console.log('Scene: ', scene);
+            sceneEl.addEventListener('loaded', function () {
+                var username = 'user-' + this.makeId(5).toLowerCase();
+                username = prompt('Choose a username', username);
+                var player = document.getElementById('player');
+                var myNametag = player.querySelector('.nametag');
+                myNametag.setAttribute('text', 'value', username);
+                var myName = player.querySelector('.name');
+                myName.setAttribute('text', 'value', username);
+                if (!username) {
+                    myNametag.setAttribute('visible', false);
+                }
 
-            scene.addEventListener('loaded', function () {
-                console.log('loaded');
-                /*var gltfTest = document.getElementById('test-gltf');
-                 gltfTest.addEventListener('model-loaded',function(e){
-                    console.log('Loaded gltf: ', e);
-                });
-                 gltfTest.addEventListener('model-error',function(e){
-                    console.log('gltf errror: ', e);
-                });
-                 console.log('gltfTest',gltfTest.object3D);*/
-            });
+                sceneEl.components['networked-scene'].connect();
+            }.bind(this));
         }
     };
 });
@@ -1615,38 +1656,64 @@ define('district-tool/routes/editor', ['exports', 'aframe', 'npm:aframe-extras',
         template: '#head-template',
         components: ['position', 'rotation', {
             selector: '.head',
-            component: 'material'
+            component: 'material',
+            property: 'color'
+        }, {
+            selector: '.nametag',
+            component: 'text',
+            property: 'value'
+        }, {
+            selector: '.nametag',
+            component: 'visible'
         }]
     });
 
     window.NAF.schemas.add({
         template: '#three-towers-template',
-        components: ['position', 'colorize']
+        components: ['position', {
+            selector: '.wrapper',
+            component: 'colorize'
+        }]
     });
 
     window.NAF.schemas.add({
         template: '#city-block-template',
-        components: ['position', 'colorize']
+        components: ['position', {
+            selector: '.wrapper',
+            component: 'colorize'
+        }]
     });
 
     window.NAF.schemas.add({
         template: '#pole-block-template',
-        components: ['position', 'colorize']
+        components: ['position', {
+            selector: '.wrapper',
+            component: 'colorize'
+        }]
     });
 
     window.NAF.schemas.add({
         template: '#regular-block-template',
-        components: ['position', 'colorize']
+        components: ['position', {
+            selector: '.wrapper',
+            component: 'colorize'
+        }]
     });
 
     window.NAF.schemas.add({
         template: '#industrial-stack-template',
-        components: ['position', 'colorize']
+        components: ['position', {
+            selector: '.wrapper',
+            component: 'colorize'
+        }]
     });
 
     window.NAF.schemas.add({
         template: '#orb-block-template',
-        components: ['position', 'colorize']
+        components: ['position', {
+            selector: '.wrapper',
+            component: 'colorize'
+        }]
     });
 
     window.NAF.options.compressSyncPackets = true;
@@ -1849,7 +1916,7 @@ define("district-tool/templates/editor", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "84FuAvUN", "block": "{\"symbols\":[],\"statements\":[[4,\"ui-nag\",null,[[\"class\"],[\"inline\"]],{\"statements\":[[0,\"    \"],[6,\"span\"],[9,\"class\",\"title\"],[7],[0,\"\\n    Use the WSAD keys to move and the mouse to look. Click and grab objects in the scene.\\n  \"],[8],[0,\"\\n    \"],[6,\"i\"],[9,\"class\",\"close icon\"],[7],[8],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\"],[5,\"a-scene\",[[9,\"physics\",\"\"],[9,\"vr-mode-ui\",\"enabled: true\"],[9,\"networked-scene\",\"\\n  serverURL: https://haydenlee.io;\\n  app: district-tool;\\n  room: Aetheria;\\n  connectOnLoad: true;\\n  adapter: easyrtc;\\n  audio: false;\\n  debug: false;\\n\"]],[[],[]],{\"statements\":[[0,\"\\n    \"],[5,\"a-assets\",[],[[],[]],{\"statements\":[[0,\"\\n\\n        \"],[2,\" Mixins \"],[0,\"\\n\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube\"],[9,\"hoverable\",\"\"],[9,\"shadow\",\"\"],[9,\"grabbable\",\"\"],[9,\"drag-droppable\",\"\"],[9,\"dynamic-body\",\"\"],[9,\"geometry\",\"primitive: box; width: 1.1; height: 1.1; depth: 1.1\"],[9,\"material\",\"transparent: true; opacity: 0\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-hovered\"],[9,\"material\",\"opacity: 0.7; color: purple\"]],[[],[]],{\"statements\":[[0,\"\\n        \"]],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-dragover\"],[9,\"material\",\"opacity: 0.7; color: green\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-dragover-stop\"],[9,\"material\",\"opacity: 0.7; color: purple\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[2,\"<a-mixin id=\\\"transformer\\\" drag-droppable\\n                 fillable\\n                  material=\\\"shader:flat; wireframe: false; transparent: true; opacity: 0.2; color: pink; side: double\\\"\\n                  geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-inv\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false; transparent: true; opacity: 0.2; color: purple; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-opaque\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false; transparent: false; opacity: 1; color: pink; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-inv-opaque\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false;  transparent: false; opacity: 1; color: purple; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\"],[0,\"\\n\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-inv-dragover\"],[9,\"material\",\"opacity: 0.1\"],[9,\"material\",\"color: #00ff00\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-inv-dragover-stop\"],[9,\"material\",\"opacity: 0.2\"],[9,\"material\",\"color: purple\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-dragover\"],[9,\"material\",\"opacity: 0.1\"],[9,\"material\",\"color: #00ff00\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-dragover-stop\"],[9,\"material\",\"opacity: 0.2\"],[9,\"material\",\"color: pink\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[6,\"img\"],[9,\"id\",\"grid1x1-texture\"],[9,\"src\",\"assets/img/textures/grid.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"three-towers-texture\"],[9,\"src\",\"assets/img/textures/blocks/three-towers.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"city-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/city-block.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"pole-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/pole-block.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"regular-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/regular-block.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"industrial-stack-texture\"],[9,\"src\",\"assets/img/textures/blocks/industrial-stack.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"orb-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/orb-block.png\"],[7],[8],[0,\"\\n\\n\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"env_arrow\"],[9,\"src\",\"assets/obj/env_arrow.obj\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"hmd-obj-model\"],[9,\"src\",\"assets/obj/simple-vr-hmd/model.obj\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"hmd-obj-mtl\"],[9,\"src\",\"assets/obj/simple-vr-hmd/materials.mtl\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[2,\" Simple VR HMD by Aaron Clifford - https://vr.google.com/u/2/objects/aG7h3TTjc51 \"],[0,\"\\n\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"city-block-model\"],[9,\"src\",\"assets/obj/city-block/model.obj\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"city-block-mtl\"],[9,\"src\",\"assets/obj/city-block/materials.mtl\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[2,\" City Block by Alex Safayan - https://vr.google.com/u/2/objects/cDhy17AP_FO \"],[0,\"\\n\\n    \"]],\"parameters\":[]}],[0,\"\\n        \"],[2,\" progressive controls must have all objects the raycaster can interact with set or they will not fire events \"],[0,\"\\n            \"],[5,\"a-entity\",[[9,\"id\",\"player\"],[9,\"progressive-controls\",\"objects: .cube, .collidable, .transformer; maxLevel: point\"]],[[],[]],{\"statements\":[[0,\"\\n                \"],[5,\"a-camera\",[[9,\"super-hands\",\"\"],[9,\"universal-controls\",\"\"],[9,\"networked\",\"template:#head-template;showLocalTemplate:false;\"],[9,\"position\",\"0 3 0\"],[9,\"spawn-in-circle\",\"radius:3;\"]],[[],[]],{\"statements\":[[0,\"\\n                        \"],[5,\"a-cursor\",[[9,\"id\",\"cursor\"],[9,\"raycaster\",\"showLine: true; far: 100\"],[9,\"line\",\"color: orange; opacity: 0.5\"],[9,\"intersection-spawn\",\"event: click; currentTemplate: #three-towers-template; templates: #three-towers-template, #city-block-template, #pole-block-template, #regular-block-template, #industrial-stack-template, #orb-block-template\"],[9,\"position\",\"0 0 -0.5\"],[9,\"geometry\",\"primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32\"],[9,\"material\",\"color: white; shader: flat\"]],[[],[]],{\"statements\":[[0,\"\\n                            \"],[5,\"a-entity\",[[9,\"id\",\"cursor-menu\"],[9,\"select-bar\",\"controllerID: cursor\"],[9,\"scale\",\"0.7 0.7 0.7\"],[9,\"position\",\"0 -0.2 0.2\"],[9,\"rotation\",\"0 0 0\"]],[[],[]],{\"statements\":[[0,\"\\n                                \"],[6,\"optgroup\"],[9,\"class\",\"cursor-options\"],[9,\"label\",\"Blocks\"],[9,\"value\",\"blocks\"],[7],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#three-towers-template\"],[9,\"src\",\"#three-towers-texture\"],[9,\"selected\",\"\"],[7],[0,\"3 Towers\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#city-block-template\"],[9,\"src\",\"#city-block-texture\"],[9,\"selected\",\"\"],[7],[0,\"City\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#pole-block-template\"],[9,\"src\",\"#pole-block-texture\"],[9,\"selected\",\"\"],[7],[0,\"Poles\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#regular-block-template\"],[9,\"src\",\"#regular-block-texture\"],[9,\"selected\",\"\"],[7],[0,\"Regular\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#industrial-stack-template\"],[9,\"src\",\"#industrial-stack-texture\"],[9,\"selected\",\"\"],[7],[0,\"Industrial\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#orb-block-template\"],[9,\"src\",\"#orb-block-texture\"],[9,\"selected\",\"\"],[7],[0,\"Orb\"],[8],[0,\"\\n                                \"],[8],[0,\"\\n                            \"]],\"parameters\":[]}],[0,\"\\n                        \"]],\"parameters\":[]}],[0,\"\\n\\n                \"]],\"parameters\":[]}],[0,\"\\n                \"],[5,\"a-entity\",[[9,\"id\",\"rhand\"],[9,\"class\",\"right-controller\"],[9,\"networked\",\"template:#right-hand-template\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n                \"],[5,\"a-entity\",[[9,\"id\",\"lhand\"],[9,\"class\",\"left-controller\"],[9,\"networked\",\"template:#left-hand-template\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n            \"]],\"parameters\":[]}],[0,\"\\n\\n    \"],[2,\" ground collider keeps objets from falling \"],[0,\"\\n    \"],[5,\"a-box\",[[9,\"position\",\"0 -3 0\"],[9,\"snap-surface\",\"\"],[9,\"static-body\",\"\"],[9,\"class\",\"collidable\"],[9,\"color\",\"#000000\"],[9,\"width\",\"100\"],[9,\"height\",\"10\"],[9,\"depth\",\"100\"],[9,\"visible\",\"false\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n    \"],[5,\"a-entity\",[[9,\"position\",\"0 2 0\"]],[[],[]],{\"statements\":[[0,\"\\n        \"],[5,\"a-sphere\",[[9,\"shadow\",\"\"],[9,\"radius\",\"0.5\"],[9,\"position\",\"0 0.5 0\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-box\",[[9,\"shadow\",\"\"],[9,\"width\",\"1\"],[9,\"height\",\"0.2\"],[9,\"depth\",\"1\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n    \"]],\"parameters\":[]}],[0,\"\\n\\n\\n    \"],[5,\"a-entity\",[[9,\"position\",\"0 2 0\"],[9,\"environment\",\"playArea: 1; preset: tron; shadow: false; shadowSize: 256; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; groundTexture: checkerboard; groundColor: #030f22; groundColor2: #04142e; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb\"],[9,\"environment-ground-texture\",\"repeat: 10.1\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n    \"],[5,\"a-entity\",[[9,\"position\",\"0 0 0\"],[9,\"star-system\",\"radius: 100; color: #ee75eb; size: 2; count: 1000; texture: assets/img/textures/plus.svg\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\"]],\"parameters\":[]}]],\"hasEval\":false}", "meta": { "moduleName": "district-tool/templates/editor.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "D3EZRO8v", "block": "{\"symbols\":[],\"statements\":[[4,\"ui-nag\",null,[[\"class\"],[\"inline\"]],{\"statements\":[[0,\"    \"],[6,\"span\"],[9,\"class\",\"title\"],[7],[0,\"\\n    Use the WSAD keys to move and the mouse to look. Click and grab objects in the scene.\\n  \"],[8],[0,\"\\n    \"],[6,\"i\"],[9,\"class\",\"close icon\"],[7],[8],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\"],[5,\"a-scene\",[[9,\"debug\",\"\"],[9,\"physics\",\"\"],[9,\"vr-mode-ui\",\"enabled: true\"],[9,\"networked-scene\",\"\\n  serverURL: https://haydenlee.io;\\n  app: district-tool;\\n  room: Aetheria;\\n  connectOnLoad: false;\\n  adapter: easyrtc;\\n  audio: false;\\n  debug: false;\\n\"]],[[],[]],{\"statements\":[[0,\"\\n    \"],[5,\"a-assets\",[],[[],[]],{\"statements\":[[0,\"\\n\\n        \"],[2,\" Mixins \"],[0,\"\\n\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube\"],[9,\"hoverable\",\"\"],[9,\"shadow\",\"\"],[9,\"grabbable\",\"\"],[9,\"drag-droppable\",\"\"],[9,\"dynamic-body\",\"\"],[9,\"geometry\",\"primitive: box; width: 1.1; height: 1.1; depth: 1.1\"],[9,\"material\",\"transparent: true; opacity: 0\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-hovered\"],[9,\"material\",\"opacity: 0.7; color: purple\"]],[[],[]],{\"statements\":[[0,\"\\n        \"]],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-dragover\"],[9,\"material\",\"opacity: 0.7; color: green\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"cube-dragover-stop\"],[9,\"material\",\"opacity: 0.7; color: purple\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[2,\"<a-mixin id=\\\"transformer\\\" drag-droppable\\n                 fillable\\n                  material=\\\"shader:flat; wireframe: false; transparent: true; opacity: 0.2; color: pink; side: double\\\"\\n                  geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-inv\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false; transparent: true; opacity: 0.2; color: purple; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-opaque\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false; transparent: false; opacity: 1; color: pink; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\\n\\n        <a-mixin id=\\\"transformer-inv-opaque\\\" drag-droppable\\n                 fillable\\n                 material=\\\"shader:flat; wireframe: false;  transparent: false; opacity: 1; color: purple; side: double\\\"\\n                 geometry=\\\"primitive: plane; width: 1; height: 1; depth: 1\\\" rotation=\\\"-90 0 0\\\"></a-mixin>\"],[0,\"\\n\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-inv-dragover\"],[9,\"material\",\"opacity: 0.1\"],[9,\"material\",\"color: #00ff00\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-inv-dragover-stop\"],[9,\"material\",\"opacity: 0.2\"],[9,\"material\",\"color: purple\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-dragover\"],[9,\"material\",\"opacity: 0.1\"],[9,\"material\",\"color: #00ff00\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-mixin\",[[9,\"id\",\"transformer-dragover-stop\"],[9,\"material\",\"opacity: 0.2\"],[9,\"material\",\"color: pink\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[6,\"img\"],[9,\"id\",\"grid1x1-texture\"],[9,\"src\",\"assets/img/textures/grid.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"three-towers-texture\"],[9,\"src\",\"assets/img/textures/blocks/three-towers.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"city-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/city-block.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"pole-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/pole-block.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"regular-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/regular-block.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"industrial-stack-texture\"],[9,\"src\",\"assets/img/textures/blocks/industrial-stack.png\"],[7],[8],[0,\"\\n        \"],[6,\"img\"],[9,\"id\",\"orb-block-texture\"],[9,\"src\",\"assets/img/textures/blocks/orb-block.png\"],[7],[8],[0,\"\\n\\n\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"env_arrow\"],[9,\"src\",\"assets/obj/env_arrow.obj\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"hmd-obj-model\"],[9,\"src\",\"assets/obj/simple-vr-hmd/model.obj\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"hmd-obj-mtl\"],[9,\"src\",\"assets/obj/simple-vr-hmd/materials.mtl\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[2,\" Simple VR HMD by Aaron Clifford - https://vr.google.com/u/2/objects/aG7h3TTjc51 \"],[0,\"\\n\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"city-block-model\"],[9,\"src\",\"assets/obj/city-block/model.obj\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[5,\"a-asset-item\",[[9,\"id\",\"city-block-mtl\"],[9,\"src\",\"assets/obj/city-block/materials.mtl\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n        \"],[2,\" City Block by Alex Safayan - https://vr.google.com/u/2/objects/cDhy17AP_FO \"],[0,\"\\n\\n    \"]],\"parameters\":[]}],[0,\"\\n        \"],[2,\" progressive controls must have all objects the raycaster can interact with set or they will not fire events \"],[0,\"\\n            \"],[5,\"a-entity\",[[9,\"id\",\"player\"],[9,\"progressive-controls\",\"objects: .cube, .collidable, .transformer; maxLevel: point\"]],[[],[]],{\"statements\":[[0,\"\\n                \"],[5,\"a-camera\",[[9,\"super-hands\",\"\"],[9,\"universal-controls\",\"\"],[9,\"networked\",\"template:#head-template;showLocalTemplate:false;\"],[9,\"position\",\"0 3 0\"],[9,\"spawn-in-circle\",\"radius:3;\"]],[[],[]],{\"statements\":[[0,\"\\n                        \"],[5,\"a-cursor\",[[9,\"id\",\"cursor\"],[9,\"raycaster\",\"showLine: true; far: 100\"],[9,\"line\",\"color: orange; opacity: 0.5\"],[9,\"intersection-spawn\",\"event: click; currentTemplate: #three-towers-template; templates: #three-towers-template, #city-block-template, #pole-block-template, #regular-block-template, #industrial-stack-template, #orb-block-template\"],[9,\"position\",\"0 0 -0.5\"],[9,\"geometry\",\"primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32\"],[9,\"material\",\"color: white; shader: flat\"]],[[],[]],{\"statements\":[[0,\"\\n\\n                            \"],[5,\"a-entity\",[[9,\"id\",\"cursor-menu\"],[9,\"select-bar\",\"controllerID: cursor\"],[9,\"scale\",\"0.7 0.7 0.7\"],[9,\"position\",\"0 -0.2 0.2\"],[9,\"rotation\",\"0 0 0\"]],[[],[]],{\"statements\":[[0,\"\\n                                \"],[5,\"a-entity\",[[9,\"class\",\"name\"],[9,\"text\",\"value: Hello World; align:center; font: roboto\"],[9,\"scale\",\"0.5 0.5 0.5\"],[9,\"position\",\"0 0.05 0\"],[9,\"rotation\",\"0 0 0\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n                                \"],[6,\"optgroup\"],[9,\"class\",\"cursor-options\"],[9,\"label\",\"Blocks\"],[9,\"value\",\"blocks\"],[7],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#three-towers-template\"],[9,\"src\",\"#three-towers-texture\"],[9,\"selected\",\"\"],[7],[0,\"3 Towers\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#city-block-template\"],[9,\"src\",\"#city-block-texture\"],[7],[0,\"City\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#pole-block-template\"],[9,\"src\",\"#pole-block-texture\"],[7],[0,\"Poles\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#regular-block-template\"],[9,\"src\",\"#regular-block-texture\"],[7],[0,\"Regular\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#industrial-stack-template\"],[9,\"src\",\"#industrial-stack-texture\"],[7],[0,\"Industrial\"],[8],[0,\"\\n                                    \"],[6,\"option\"],[9,\"value\",\"#orb-block-template\"],[9,\"src\",\"#orb-block-texture\"],[7],[0,\"Orb\"],[8],[0,\"\\n                                \"],[8],[0,\"\\n                            \"]],\"parameters\":[]}],[0,\"\\n                        \"]],\"parameters\":[]}],[0,\"\\n\\n                \"]],\"parameters\":[]}],[0,\"\\n                \"],[5,\"a-entity\",[[9,\"id\",\"rhand\"],[9,\"class\",\"right-controller\"],[9,\"networked\",\"template:#right-hand-template\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n                \"],[5,\"a-entity\",[[9,\"id\",\"lhand\"],[9,\"class\",\"left-controller\"],[9,\"networked\",\"template:#left-hand-template\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n            \"]],\"parameters\":[]}],[0,\"\\n\\n    \"],[2,\" ground collider keeps objets from falling \"],[0,\"\\n    \"],[5,\"a-box\",[[9,\"position\",\"0 -3 0\"],[9,\"snap-surface\",\"\"],[9,\"static-body\",\"\"],[9,\"class\",\"collidable\"],[9,\"color\",\"#000000\"],[9,\"width\",\"100\"],[9,\"height\",\"10\"],[9,\"depth\",\"100\"],[9,\"visible\",\"false\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\\n    \"],[5,\"a-entity\",[[9,\"id\",\"block-tester\"],[9,\"position\",\"0 2 0\"]],[[],[]],{\"statements\":[[0,\"\\n\\n    \"]],\"parameters\":[]}],[0,\"\\n\\n\\n    \"],[5,\"a-entity\",[[9,\"position\",\"0 2 0\"],[9,\"environment\",\"playArea: 1; preset: tron; shadow: false; shadowSize: 256; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; groundTexture: checkerboard; groundColor: #030f22; groundColor2: #04142e; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb\"],[9,\"environment-ground-texture\",\"repeat: 10.1\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n    \"],[5,\"a-entity\",[[9,\"position\",\"0 0 0\"],[9,\"star-system\",\"radius: 100; color: #ee75eb; size: 2; count: 1000; texture: assets/img/textures/plus.svg\"]],[[],[]],{\"statements\":[],\"parameters\":[]}],[0,\"\\n\"]],\"parameters\":[]}]],\"hasEval\":false}", "meta": { "moduleName": "district-tool/templates/editor.hbs" } });
 });
 define("district-tool/templates/index", ["exports"], function (exports) {
   "use strict";
@@ -2006,6 +2073,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("district-tool/app")["default"].create({"name":"district-tool","version":"0.0.0+98e1984e"});
+  require("district-tool/app")["default"].create({"name":"district-tool","version":"0.0.0+65839884"});
 }
 //# sourceMappingURL=district-tool.map
