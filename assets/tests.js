@@ -15,6 +15,11 @@ define('district-tool/tests/app.lint-test', [], function () {
     assert.ok(true, 'components/aframe/land-component.js should pass ESLint\n\n');
   });
 
+  QUnit.test('components/aframe/raw/block-cursor.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'components/aframe/raw/block-cursor.js should pass ESLint\n\n10:9 - Unexpected console statement. (no-console)');
+  });
+
   QUnit.test('components/aframe/raw/colorize.js', function (assert) {
     assert.expect(1);
     assert.ok(false, 'components/aframe/raw/colorize.js should pass ESLint\n\n15:9 - Unexpected console statement. (no-console)');
@@ -82,7 +87,7 @@ define('district-tool/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/editor.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/editor.js should pass ESLint\n\n168:13 - Unexpected console statement. (no-console)\n172:13 - Unexpected console statement. (no-console)\n176:13 - Unexpected console statement. (no-console)\n180:13 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'routes/editor.js should pass ESLint\n\n172:13 - Unexpected console statement. (no-console)\n176:13 - Unexpected console statement. (no-console)\n180:13 - Unexpected console statement. (no-console)\n184:13 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('routes/index.js', function (assert) {
