@@ -1,6 +1,6 @@
 export default {
     schema: {
-        color: {type: 'color', default: 'red'}
+        color: {type: 'color', default: 'white'}
     },
     init: function() {
         this.el.addEventListener('componentinitialized',function(){
