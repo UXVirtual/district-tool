@@ -6,7 +6,6 @@ module.exports = function(environment) {
     modulePrefix: 'district-tool',
     environment: 'development',
     rootURL: '/district-tool',
-    baseURL: 'null',
     locationType: 'hash',
     EmberENV: {
       FEATURES: {
