@@ -78,6 +78,10 @@ window.NAF.schemas.add({
             selector: '.nametag',
             component: 'text',
             property: 'value'
+        },
+        {
+            selector: '.nametag',
+            component: 'visible'
         }
     ]
 });

@@ -20,6 +20,9 @@ export default {
             var player = document.getElementById('player');
             var myNametag = player.querySelector('.nametag');
             myNametag.setAttribute('text', 'value', username);
+            if(!username){
+                myNametag.setAttribute('visible', false);
+            }
 
             sceneEl.components['networked-scene'].connect();
         }.bind(this));
