@@ -444,9 +444,6 @@ define('district-tool/components/aframe/raw/block-cursor', ['exports', 'aframe']
             snap: { type: 'vec3', default: { x: 1, y: 1, z: 1 } }
         },
         init: function init() {
-
-            console.log('Inited block cursor');
-
             this.cursorEl = document.createElement("a-box");
             this.cursorEl.setAttribute('id', 'block-cursor');
             this.cursorEl.setAttribute('material', 'transparent', true);
@@ -458,8 +455,6 @@ define('district-tool/components/aframe/raw/block-cursor', ['exports', 'aframe']
             this.el.sceneEl.appendChild(this.cursorEl);
 
             this.el.addEventListener('raycaster-intersection', function (evt) {
-                //console.log('hit',evt.detail.intersections[evt.detail.intersections.length-1].point);
-
                 var pos = this.snapPoint(evt.detail.intersections[evt.detail.intersections.length - 1].point);
                 this.cursorEl.setAttribute('position', pos);
             }.bind(this));
@@ -467,7 +462,7 @@ define('district-tool/components/aframe/raw/block-cursor', ['exports', 'aframe']
         snapPoint: function snapPoint(originalPos) {
             var pos = _aframe.default.utils.clone(originalPos);
             pos.x = Math.floor(pos.x / this.data.snap.x) * this.data.snap.x + this.data.offset.x;
-            pos.y = Math.floor(pos.y / this.data.snap.y) * this.data.snap.y + this.data.offset.y;
+            pos.y = 2.5;
             pos.z = Math.floor(pos.z / this.data.snap.z) * this.data.snap.z + this.data.offset.z;
             return pos;
         },
@@ -700,8 +695,6 @@ define('district-tool/components/aframe/raw/intersection-spawn', ['exports', 'af
 
                 var head = document.querySelector('#player .head');
 
-                //console.log('Avatar head: ',head);
-
                 var material = head.getAttribute('material');
                 var color = material.color;
                 var targetEl = evt.detail.intersectedEl;
@@ -729,12 +722,6 @@ define('district-tool/components/aframe/raw/intersection-spawn', ['exports', 'af
 
                     //var spawnEl = window.NAF.entities.createNetworkEntity(this.data.currentTemplate, pos, '0 0 0');
                     window.NAF.utils.whenEntityLoaded(entity, function () {
-
-                        var componentData = entity.components.networked.data;
-
-                        console.log(entity.components);
-
-                        console.log('Component data: ', componentData);
 
                         /*.addEventListener('child-attached',function(evt){
                             console.log('Set color: ',color,evt.detail.el);
@@ -910,44 +897,6 @@ define('district-tool/components/aframe/raw/spawn-in-circle', ['exports'], funct
             return { x: x, y: y };
         }
     };
-});
-define('district-tool/components/transformer-grid', ['exports', 'ember-aframe/components/a-entity'], function (exports, _aEntity) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.default = _aEntity.default.extend({
-        rows: 10,
-        cols: 10,
-        tiles: [],
-        init: function init() {
-
-            this._super();
-
-            var tiles = [];
-            var currentCol = 0;
-            var currentRow = 0;
-
-            for (var i = 0; i < this.cols * this.rows; i++) {
-                tiles.push({
-                    type: i % 2 ? 'transformer' : 'transformer-inv',
-                    position: currentCol + ' 0 ' + currentRow
-                });
-
-                currentCol++;
-                if (currentCol > this.cols - 1) {
-                    currentCol = 0;
-                    currentRow++;
-                    if (currentRow > this.rows) {
-                        break;
-                    }
-                }
-            }
-
-            this.set('tiles', tiles);
-        }
-    });
 });
 define('district-tool/components/ui-accordion', ['exports', 'semantic-ui-ember/components/ui-accordion'], function (exports, _uiAccordion) {
   'use strict';
@@ -2121,6 +2070,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("district-tool/app")["default"].create({"name":"district-tool","version":"0.0.0+d4e65d98"});
+  require("district-tool/app")["default"].create({"name":"district-tool","version":"0.0.0+0f427d3e"});
 }
 //# sourceMappingURL=district-tool.map

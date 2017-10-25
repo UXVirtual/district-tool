@@ -17,7 +17,7 @@ define('district-tool/tests/app.lint-test', [], function () {
 
   QUnit.test('components/aframe/raw/block-cursor.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/aframe/raw/block-cursor.js should pass ESLint\n\n10:9 - Unexpected console statement. (no-console)');
+    assert.ok(true, 'components/aframe/raw/block-cursor.js should pass ESLint\n\n');
   });
 
   QUnit.test('components/aframe/raw/colorize.js', function (assert) {
@@ -37,7 +37,7 @@ define('district-tool/tests/app.lint-test', [], function () {
 
   QUnit.test('components/aframe/raw/intersection-spawn.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/aframe/raw/intersection-spawn.js should pass ESLint\n\n85:21 - Unexpected console statement. (no-console)\n87:21 - Unexpected console statement. (no-console)');
+    assert.ok(true, 'components/aframe/raw/intersection-spawn.js should pass ESLint\n\n');
   });
 
   QUnit.test('components/aframe/raw/lod-level.js', function (assert) {
@@ -63,11 +63,6 @@ define('district-tool/tests/app.lint-test', [], function () {
   QUnit.test('components/aframe/raw/spawn-in-circle.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/aframe/raw/spawn-in-circle.js should pass ESLint\n\n');
-  });
-
-  QUnit.test('components/transformer-grid.js', function (assert) {
-    assert.expect(1);
-    assert.ok(false, 'components/transformer-grid.js should pass ESLint\n\n1:8 - \'Ember\' is defined but never used. (no-unused-vars)');
   });
 
   QUnit.test('helpers/even.js', function (assert) {
