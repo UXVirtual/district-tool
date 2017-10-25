@@ -57,7 +57,6 @@
         <img id="industrial-stack-texture" src="assets/img/textures/blocks/industrial-stack.png" />
         <img id="orb-block-texture" src="assets/img/textures/blocks/orb-block.png" />
 
-
         <a-asset-item id="env_arrow" src="assets/obj/env_arrow.obj"></a-asset-item>
 
         <a-asset-item id="hmd-obj-model" src="assets/obj/simple-vr-hmd/model.obj"></a-asset-item>
@@ -98,11 +97,11 @@
     <!-- ground collider keeps objets from falling -->
     <a-box position="0 -3 0" snap-surface static-body class="collidable" color="#000000" width=100 height=10 depth=100 visible="false"></a-box>
 
-    <a-entity position="0 2 0">
-        <a-sphere shadow radius="0.5" position="0 0.5 0"></a-sphere>
-        <a-box shadow width="1" height="0.2" depth="1"></a-box>
+    <a-entity id="block-tester" position="0 2 0">
+
     </a-entity>
 
+    <a-entity id="sun" position="0 15 -112" geometry="primitive:circle;" material="color: #ee75eb; side:front; transparent: false; shader: flat; fog: true" scale="20 20 20"></a-entity>
 
     <a-entity position="0 2 0" environment="playArea: 1; preset: tron; shadow: false; shadowSize: 256; flatShading: false; skyType: gradient; horizonColor: #00ccf4; lightPosition: 0 0.5 -0.2; fog: 0.6; ground: noise; groundTexture: checkerboard; groundColor: #030f22; groundColor2: #04142e; grid: 1x1; seed: 1; gridColor: #ee75eb; dressingColor: #ee75eb" environment-ground-texture="repeat: 10.1"></a-entity>
     <a-entity position="0 0 0" star-system="radius: 100; color: #ee75eb; size: 2; count: 1000; texture: assets/img/textures/plus.svg"></a-entity>
