@@ -17,6 +17,9 @@
 
 
     <script id="head-template" type="text/html">
+
+        <a-entity class="nametag" text="value: Hello World; align:center; side: double" position="0 0.7 0" rotation="0 180 0" scale="8 8 8"></a-entity>
+
         <a-entity class="avatar">
             <a-box class="head"
                    scale="0.45 0.5 0.4"
@@ -64,60 +67,72 @@
     </script>
 
     <script id="three-towers-template" type="text/html">
-      <a-box shadow width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
-      <a-box shadow width="0.2" height="1" depth="0.2" position="-0.2 0.5 0.2"></a-box>
-      <a-box shadow width="0.2" height="1" depth="0.2" position="0.2 0.5 0"></a-box>
-      <a-box shadow width="1" height="0.2" depth="1"></a-box>
+        <a-entity class="wrapper" colorize="color:blue">
+            <a-box shadow width="0.2" height="1" depth="0.2" position="0 0.5 -0.2"></a-box>
+            <a-box shadow width="0.2" height="1" depth="0.2" position="-0.2 0.5 0.2"></a-box>
+            <a-box shadow width="0.2" height="1" depth="0.2" position="0.2 0.5 0"></a-box>
+            <a-box shadow width="1" height="0.2" depth="1"></a-box>
+        </a-entity>
     </script>
 
     <script id="city-block-template" type="text/html">
-        <a-entity shadow obj-model="obj: #city-block-model; mtl: #city-block-mtl" position="-0.083 0.301 -0.064" scale="0.6 0.6 0.6"></a-entity>
-        <a-box shadow width="1" height="0.2" depth="1"></a-box>
+        <a-entity class="wrapper" colorize="color:blue">
+            <a-entity shadow obj-model="obj: #city-block-model; mtl: #city-block-mtl" position="-0.083 0.301 -0.064" scale="0.6 0.6 0.6"></a-entity>
+            <a-box shadow width="1" height="0.2" depth="1"></a-box>
+        </a-entity>
     </script>
 
     <a-entity id="pole-block-template" type="text/html">
-      <a-entity layout="type: box; margin: 0.5; columns:2; plane: xz" position="-0.25 0 -0.25">
-        <a-entity>
-          <a-box shadow width="0.2" height="1" depth="0.2" position="0 -0.5 0"></a-box>
+        <a-entity class="wrapper" colorize="color:blue">
+          <a-entity layout="type: box; margin: 0.5; columns:2; plane: xz" position="-0.25 0 -0.25">
+            <a-entity>
+              <a-box shadow width="0.2" height="1" depth="0.2" position="0 -0.5 0"></a-box>
+            </a-entity>
+            <a-entity>
+              <a-box shadow width="0.2" height="1" depth="0.2" position="0 -0.5 0"></a-box>
+            </a-entity>
+            <a-entity>
+              <a-box shadow width="0.2" height="1" depth="0.2" position="0 -0.5 0"></a-box>
+            </a-entity>
+            <a-entity>
+              <a-box shadow width="0.2" height="1" depth="0.2" position="0 -0.5 0"></a-box>
+            </a-entity>
+          </a-entity>
+          <a-box shadow width="1" height="0.2" depth="1"></a-box>
         </a-entity>
-        <a-entity>
-          <a-box shadow width="0.2" height="1" depth="0.2" position="0 -0.5 0"></a-box>
-        </a-entity>
-        <a-entity>
-          <a-box shadow width="0.2" height="1" depth="0.2" position="0 -0.5 0"></a-box>
-        </a-entity>
-        <a-entity>
-          <a-box shadow width="0.2" height="1" depth="0.2" position="0 -0.5 0"></a-box>
-        </a-entity>
-      </a-entity>
-      <a-box shadow width="1" height="0.2" depth="1"></a-box>
     </a-entity>
 
     <script id="regular-block-template" type="text/html">
-      <a-box shadow></a-box>
+        <a-entity class="wrapper" colorize="color:blue">
+          <a-box shadow></a-box>
+        </a-entity>
     </script>
 
     <script id="industrial-stack-template" type="text/html">
-        <a-entity layout="type: box; margin: 0.5; columns:2; plane: xz" position="-0.25 0 -0.25">
-            <a-entity>
-                <a-cone shadow radius-bottom="0.2" radius-top="0.1" shadow width="0.2" height="1" depth="0.2" position="0 0.5 0"></a-cone>
+        <a-entity class="wrapper" colorize="color:blue">
+            <a-entity layout="type: box; margin: 0.5; columns:2; plane: xz" position="-0.25 0 -0.25">
+                <a-entity>
+                    <a-cone shadow radius-bottom="0.2" radius-top="0.1" shadow width="0.2" height="1" depth="0.2" position="0 0.5 0"></a-cone>
+                </a-entity>
+                <a-entity>
+                    <a-cone shadow radius-bottom="0.2" radius-top="0.1" shadow width="0.2" height="1" depth="0.2" position="0 0.5 0"></a-cone>
+                </a-entity>
+                <a-entity>
+                    <a-cone shadow radius-bottom="0.2" radius-top="0.1" shadow width="0.2" height="1" depth="0.2" position="0 0.5 0"></a-cone>
+                </a-entity>
+                <a-entity>
+                    <a-cone shadow radius-bottom="0.2" radius-top="0.1" shadow width="0.2" height="1" depth="0.2" position="0 0.5 0"></a-cone>
+                </a-entity>
             </a-entity>
-            <a-entity>
-                <a-cone shadow radius-bottom="0.2" radius-top="0.1" shadow width="0.2" height="1" depth="0.2" position="0 0.5 0"></a-cone>
-            </a-entity>
-            <a-entity>
-                <a-cone shadow radius-bottom="0.2" radius-top="0.1" shadow width="0.2" height="1" depth="0.2" position="0 0.5 0"></a-cone>
-            </a-entity>
-            <a-entity>
-                <a-cone shadow radius-bottom="0.2" radius-top="0.1" shadow width="0.2" height="1" depth="0.2" position="0 0.5 0"></a-cone>
-            </a-entity>
+            <a-box shadow width="1" height="0.2" depth="1"></a-box>
         </a-entity>
-        <a-box shadow width="1" height="0.2" depth="1"></a-box>
     </script>
 
     <script id="orb-block-template" type="text/html">
-        <a-sphere shadow radius="0.5" position="0 0.5 0"></a-sphere>
-        <a-box shadow width="1" height="0.2" depth="1"></a-box>
+        <a-entity class="wrapper" colorize="color:blue">
+            <a-sphere shadow radius="0.5" position="0 0.5 0"></a-sphere>
+            <a-box shadow width="1" height="0.2" depth="1"></a-box>
+        </a-entity>
     </script>
 
     {{content-for "head-footer"}}

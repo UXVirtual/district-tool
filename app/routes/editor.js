@@ -71,7 +71,13 @@ window.NAF.schemas.add({
         'rotation',
         {
             selector: '.head',
-            component: 'material'
+            component: 'material',
+            property: 'color'
+        },
+        {
+            selector: '.nametag',
+            component: 'text',
+            property: 'value'
         }
     ]
 });
@@ -80,7 +86,10 @@ window.NAF.schemas.add({
     template: '#three-towers-template',
     components: [
         'position',
-        'colorize'
+        {
+            selector: '.wrapper',
+            component: 'colorize'
+        }
     ]
 });
 
@@ -88,7 +97,10 @@ window.NAF.schemas.add({
     template: '#city-block-template',
     components: [
         'position',
-        'colorize'
+        {
+            selector: '.wrapper',
+            component: 'colorize'
+        }
     ]
 });
 
@@ -96,7 +108,10 @@ window.NAF.schemas.add({
     template: '#pole-block-template',
     components: [
         'position',
-        'colorize'
+        {
+            selector: '.wrapper',
+            component: 'colorize'
+        }
     ]
 });
 
@@ -104,7 +119,10 @@ window.NAF.schemas.add({
     template: '#regular-block-template',
     components: [
         'position',
-        'colorize'
+        {
+            selector: '.wrapper',
+            component: 'colorize'
+        }
     ]
 });
 
@@ -112,7 +130,10 @@ window.NAF.schemas.add({
     template: '#industrial-stack-template',
     components: [
         'position',
-        'colorize'
+        {
+            selector: '.wrapper',
+            component: 'colorize'
+        }
     ]
 });
 
@@ -120,7 +141,10 @@ window.NAF.schemas.add({
     template: '#orb-block-template',
     components: [
         'position',
-        'colorize'
+        {
+            selector: '.wrapper',
+            component: 'colorize'
+        }
     ]
 });
 
@@ -151,5 +175,9 @@ export default Ember.Route.extend({
         document.body.addEventListener('entityDeleted', function (evt) {
             console.log('entityDeleted event. ', evt.detail);
         });
+
+
+
+
     }
 });

@@ -1,23 +1,27 @@
 export default {
+
+    makeId: function(length) {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < length; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    },
+
     init: function() {
 
-        var scene = document.querySelector('a-scene');
+        var sceneEl = document.querySelector('a-scene');
 
-        console.log('Scene: ',scene)
+        sceneEl.addEventListener('loaded',function(){
+            var username = 'user-' + this.makeId(5).toLowerCase();
+            username = prompt('Choose a username', username);
+            var player = document.getElementById('player');
+            var myNametag = player.querySelector('.nametag');
+            myNametag.setAttribute('text', 'value', username);
 
-        scene.addEventListener('loaded',function(){
-            console.log('loaded')
-            /*var gltfTest = document.getElementById('test-gltf');
-
-            gltfTest.addEventListener('model-loaded',function(e){
-                console.log('Loaded gltf: ', e);
-            });
-
-            gltfTest.addEventListener('model-error',function(e){
-                console.log('gltf errror: ', e);
-            });
-
-            console.log('gltfTest',gltfTest.object3D);*/
-        });
+            sceneEl.components['networked-scene'].connect();
+        }.bind(this));
     }
 };

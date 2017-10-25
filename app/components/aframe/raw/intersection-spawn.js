@@ -69,15 +69,28 @@ export default {
 
                 entity.setAttribute('position',pos.x+ ' 2.5 '+pos.z);
                 entity.setAttribute('networked','template:'+this.data.currentTemplate+'; showLocalTemplate:true');
-
-
                 sceneEl.appendChild(entity);
 
+                //TODO: set colorize component inside the template then set its attribute here
 
+                setTimeout(function(){
+                    entity.querySelector('.wrapper').setAttribute('colorize','color',color);
+                },500);
 
                 //var spawnEl = window.NAF.entities.createNetworkEntity(this.data.currentTemplate, pos, '0 0 0');
                 window.NAF.utils.whenEntityLoaded(entity, function() {
-                    entity.setAttribute('colorize','color',color);
+
+                    var componentData = entity.components.networked.data;
+
+                    console.log(entity.components);
+
+                    console.log('Component data: ',componentData);
+
+
+                    /*.addEventListener('child-attached',function(evt){
+                        console.log('Set color: ',color,evt.detail.el);
+                        evt.detail.el.setAttribute('colorize','color',color);
+                    }.bind(this));*/
 
                     var spawnEvent = new CustomEvent('spawnEvent', {'detail': {
                         target: entity
