@@ -49,8 +49,6 @@ export default {
 
             var head = document.querySelector('#player .head');
 
-            //console.log('Avatar head: ',head);
-
             var material = head.getAttribute('material');
             var color = material.color;
             var targetEl = evt.detail.intersectedEl;
@@ -79,13 +77,6 @@ export default {
 
                 //var spawnEl = window.NAF.entities.createNetworkEntity(this.data.currentTemplate, pos, '0 0 0');
                 window.NAF.utils.whenEntityLoaded(entity, function() {
-
-                    var componentData = entity.components.networked.data;
-
-                    console.log(entity.components);
-
-                    console.log('Component data: ',componentData);
-
 
                     /*.addEventListener('child-attached',function(evt){
                         console.log('Set color: ',color,evt.detail.el);
