@@ -55,7 +55,7 @@
     "ember-welcome-page": "^3.0.0",
     "gh-pages": "^1.0.0",
     "loader.js": "^4.2.3",
-    "networked-aframe": "^0.3.1",
+    "networked-aframe": "^0.3.2",
     "semantic-ui-ember": "^2.0.1",
     "socket.io-client": "^2.0.3",
     "super-hands": "^2.0.2",
