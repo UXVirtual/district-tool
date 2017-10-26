@@ -67,7 +67,76 @@ if (!AFRAME.components['lod-level']) {
     AFRAME.registerComponent('lod-level', LODLevel);
 }*/
 
+// Define custom schema for syncing avatar color, set by random-color
+window.NAF.schemas.add({
+    template: '#head-template',
+    components: [
+        'position',
+        'rotation',
+        {
+            selector: '.head',
+            component: 'material',
+            property: 'color'
+        },
+        {
+            selector: '.nametag',
+            component: 'text',
+            property: 'value'
+        },
+        {
+            selector: '.nametag',
+            component: 'visible'
+        }
+    ]
+});
 
+window.NAF.schemas.add({
+    template: '#three-towers-template',
+    components: [
+        'position',
+        {component: 'colorize', property: 'color'}
+    ]
+});
+
+window.NAF.schemas.add({
+    template: '#city-block-template',
+    components: [
+        'position',
+        {component: 'colorize', property: 'color'}
+    ]
+});
+
+window.NAF.schemas.add({
+    template: '#pole-block-template',
+    components: [
+        'position',
+        {component: 'colorize', property: 'color'}
+    ]
+});
+
+window.NAF.schemas.add({
+    template: '#regular-block-template',
+    components: [
+        'position',
+        {component: 'colorize', property: 'color'}
+    ]
+});
+
+window.NAF.schemas.add({
+    template: '#industrial-stack-template',
+    components: [
+        'position',
+        {component: 'colorize', property: 'color'}
+    ]
+});
+
+window.NAF.schemas.add({
+    template: '#orb-block-template',
+    components: [
+        'position',
+        {component: 'colorize', property: 'color'}
+    ]
+});
 
 // Register a particular package, and its dependencies.
 extras.controls.registerAll();

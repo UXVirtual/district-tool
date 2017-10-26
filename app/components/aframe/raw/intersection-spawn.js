@@ -82,17 +82,23 @@ export default {
                     });*/
                 });
 
+                //TODO: see why this isn't working - Glitch here: https://glitch.com/edit/#!/colorize-me
+
                 //var spawnEl = window.NAF.entities.createNetworkEntity(this.data.currentTemplate, pos, '0 0 0');
                 window.NAF.utils.whenEntityLoaded(entity, function() {
 
-                    entity.setAttribute('colorize','color',color);
+                    //entity.setAttribute('colorize','color',color);
 
-                    /*entity.addEventListener('templaterendered', function (evt) {
+                    entity.addEventListener('templaterendered', function (evt) {
                         console.log('Template rendered',evt);
                         // Set the color to colorize; schema specifies network sync.
-                        evt.detail.target.setAttribute('colorize','color',color);
+                        // NOTE: this logs an update to the color, but then a subsequent update to default.
+                        // But, now that colorize doesn't do anything by default, it's OK.
+                        // UPDATE: left colorize out of the template to avoid redundant colorize
+                        //evt.detail.target.setAttribute('colorize','color',color);
+                        entity.setAttribute('colorize','color',color);
 
-                    });*/
+                    });
 
                     /*.addEventListener('child-attached',function(evt){
                         console.log('Set color: ',color,evt.detail.el);
