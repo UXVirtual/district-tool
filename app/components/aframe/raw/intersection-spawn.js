@@ -71,12 +71,28 @@ export default {
 
                 //TODO: set colorize component inside the template then set its attribute here
 
+                // Wait a tick for the DOM changes to take effect.
                 setTimeout(function(){
-                    entity.querySelector('.wrapper').setAttribute('colorize','color',color);
-                },500);
+                    //entity.setAttribute('colorize','color',color);
+                    // Wait for the (local) template to be rendered.
+                    /*entity.addEventListener('templaterendered', function (evt) {
+                        console.log('Template rendered',evt);
+                        // Set the color to colorize; schema specifies network sync.
+
+                    });*/
+                });
 
                 //var spawnEl = window.NAF.entities.createNetworkEntity(this.data.currentTemplate, pos, '0 0 0');
                 window.NAF.utils.whenEntityLoaded(entity, function() {
+
+                    entity.setAttribute('colorize','color',color);
+
+                    /*entity.addEventListener('templaterendered', function (evt) {
+                        console.log('Template rendered',evt);
+                        // Set the color to colorize; schema specifies network sync.
+                        evt.detail.target.setAttribute('colorize','color',color);
+
+                    });*/
 
                     /*.addEventListener('child-attached',function(evt){
                         console.log('Set color: ',color,evt.detail.el);
