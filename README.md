@@ -1,7 +1,7 @@
-# district-tool
+District Tool
+=============
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+A planning tool for Decentraland Districts.
 
 ## Prerequisites
 
@@ -11,12 +11,21 @@ You will need the following things properly installed on your computer.
 * [Node.js](https://nodejs.org/) (with NPM)
 * [Ember CLI](https://ember-cli.com/)
 * [Google Chrome](https://google.com/chrome/)
+* [Watchman](https://github.com/facebook/watchman)
+
+## Installing Watchman
+
+### Windows
+
+* Follow [these instructions](https://medium.com/@vonchristian/how-to-setup-watchman-on-ubuntu-16-04-53196cc0227c)
 
 ## Installation
 
 * `git clone <repository-url>` this repository
 * `cd district-tool`
 * `npm install`
+* `npm install bower -g`
+* `bower install`
 
 ## Running / Development
 
@@ -39,7 +48,9 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 ### Deploying
 
-Specify what it takes to deploy your app.
+#### GitHub Pages
+
+* `npm run ghpages` - Deploys to GitHub pages for the demo site
 
 ## Further Reading / Useful Links
 
