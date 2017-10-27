@@ -15,9 +15,10 @@ You will need the following things properly installed on your computer.
 
 ## Installing Watchman
 
-### Windows
+### Windows Bash
 
 * Follow [these instructions](https://medium.com/@vonchristian/how-to-setup-watchman-on-ubuntu-16-04-53196cc0227c)
+* You may need to install additional packages to build watchman if prompted during the compilation steps
 
 ## Installation
 
